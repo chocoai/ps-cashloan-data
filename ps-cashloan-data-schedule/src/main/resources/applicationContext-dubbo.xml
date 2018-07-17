@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://code.alibabatech.com/schema/dubbo
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- Dubbo配置 -->
+    <dubbo:application name="ps-cashloan-data-schedule" logger="${dubbo.application.logger}"/>
+    <!-- 通过 广播通知所有人-->
+    <dubbo:registry id="cashloan-data-schedule" address="${cashloan.data.registry.address}" protocol="${cashloan.data.registry.protocol}"/>
+
+    <dubbo:reference id="bankPortraitDomain" interface="com.btjf.cashloan.data.thirdpart.bt.domain.BankPortraitDomain" version="1.0.0" check="false"/>
+
+</beans>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ps-cashloan-data</artifactId>
+        <groupId>com.adpanshi</groupId>
+        <version>1.0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>war</packaging>
+    <artifactId>ps-cashloan-data-center</artifactId>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-user-service</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-thirdparty-aadhaar-service</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-variable-service</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-feature-service</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-appdata-service</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0.0.1</version>
+        </dependency>
+    </dependencies>
+</project>

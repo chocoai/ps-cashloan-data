@@ -1,0 +1,14 @@
+*.jar
+*.class
+*/target/
+*.lst
+*.iml
+.idea/
+ps-cashloan-data-appdata/ps-cashloan-data-appdata-test/target/
+ps-cashloan-data-feature/ps-cashloan-data-feature-interface/target/
+ps-cashloan-data-thirdparty-aadhaar/ps-cashloan-data-thirdparty-aadhaar-interface/target/
+ps-cashloan-data-user/ps-cashloan-data-user-interface/target/
+ps-cashloan-data-variable/ps-cashloan-data-variable-interface/target/
+ps-cashloan-data-variable/ps-cashloan-data-variable-service/target/
+ps-cashloan-data-feature/ps-cashloan-data-feature-service/target/
+ps-cashloan-data-appdata/ps-cashloan-data-appdata-interface/target/
