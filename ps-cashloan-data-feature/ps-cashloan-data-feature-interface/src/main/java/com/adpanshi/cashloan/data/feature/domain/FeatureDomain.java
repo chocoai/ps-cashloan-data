@@ -16,8 +16,8 @@ public interface FeatureDomain {
      * @param featureType       特征类型
      * @return                  特征抽取结果
      */
-    FeatureDataBo extractFeature(List<DataFromBo> variableDataIdList, FeatureType featureType, String account, String aadhaarNo,
-                                 String name, String equipmentFingerpints);
+    FeatureDataBo extractFeature(List<DataFromBo> variableDataIdList, FeatureType featureType, String mobile, String email,
+                                 String aadhaarNo, String name, String equipmentFingerpints);
 
     /**
      * 根据id获取特征数据

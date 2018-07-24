@@ -14,7 +14,8 @@ public enum DataTypeEnum implements ContentEnum {
     SECTION("区间", 50),
     BOOLEAN("布尔类型", 60),
     ENUM("枚举", 70),
-    ARRAY("数组", 80),;
+    ARRAY("数组", 80),
+    ;
 
     private String content;
     private Integer value;

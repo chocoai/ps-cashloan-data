@@ -14,8 +14,9 @@ public enum ChannelTypeEnum implements ContentEnum {
     CREDITREPORT("creditReport", 3),
     OPERATOR("operator", 4),
     CIBIL("cibil", 5),
-    TONGDUNCREDITBODYGUARD("tongduncreditbodyguard", 6),
-    PSAPP("盘石app",7);
+    TONGDUNCREDITBODYGUARD("tongdunCreditBodyguard", 6),
+    PSAPP("盘石app",7),
+    CONSUMERLOANHISTORY("consumerLoanHistory", 8),
 ;
     private String content;
     private Integer value;

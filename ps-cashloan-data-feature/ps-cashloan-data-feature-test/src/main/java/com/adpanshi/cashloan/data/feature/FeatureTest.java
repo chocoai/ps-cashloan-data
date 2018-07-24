@@ -30,7 +30,8 @@ public class FeatureTest {
     private static final String name = "周善文";
     private static final Integer featureDataId = 1;
     private static final FeatureType featureType = FeatureType.USER_BASICINFO_ADDRESS_CROSS_VALIDATION;
-
+    private static final String mobile = "15267011679";
+    private static final String email = "1119439642@qq.com";
     /**
      * 抽取特征
      */
@@ -44,7 +45,7 @@ public class FeatureTest {
         dataFromBo.setChannelDataCreateTime("2018-07-15 22:02:24 112");
         dataFromBo.setCreateTime("2018-07-15 22:02:24 112");
         dataFromBoList.add(dataFromBo);
-        FeatureDataBo featureDataBo = remote.extractFeature(dataFromBoList, featureType, account, aadhaarNo, name, equipmentFingerpints);
+        FeatureDataBo featureDataBo = remote.extractFeature(dataFromBoList, featureType, mobile, email, aadhaarNo, name, equipmentFingerpints);
         System.err.println(JSONObject.toJSONString(featureDataBo));
     }
 

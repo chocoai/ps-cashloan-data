@@ -148,7 +148,7 @@ public class UserDataNativeDomain implements UserDataDomain {
                     ", channelBizType=" + channelBizType + ",channelDataId=" + channelDataId);
         }
         //获取抽取到的变量
-        List<VariableDataBo> resultBoList = variableDomain.extractVariable(channelType, channelBizType, channelDataId, userMetaData.getCreateTime(), userData.getMobile(), userData.getAadhaarNo(), userData.getName(), userData.getDeviceFingerprint());
+        List<VariableDataBo> resultBoList = variableDomain.extractVariable(channelType, channelBizType, channelDataId, userMetaData.getCreateTime(), userData.getMobile(), userData.getEmail(), userData.getAadhaarNo(), userData.getName(), userData.getDeviceFingerprint());
         //未抽取到变量,可能对应的变量配置器为空
         if (resultBoList == null || resultBoList.size() == 0) {
             throw new BusinessException("变量抽取跑了个空,元芳你怎么看？");
@@ -231,7 +231,7 @@ public class UserDataNativeDomain implements UserDataDomain {
                 }
             }
             //抽取特征
-            FeatureDataBo featureExtractResultBo = featureDomain.extractFeature(dataFromBoList, applyBo.getFeatureType(), userData.getMobile(), userData.getAadhaarNo(), userData.getName(), userData.getDeviceFingerprint());
+            FeatureDataBo featureExtractResultBo = featureDomain.extractFeature(dataFromBoList, applyBo.getFeatureType(), userData.getMobile(), userData.getAadhaarNo(), userData.getEmail(), userData.getName(), userData.getDeviceFingerprint());
             if (featureExtractResultBo == null) {
                 throw new BusinessException("抽取特征为空");
             }
@@ -279,21 +279,23 @@ public class UserDataNativeDomain implements UserDataDomain {
         List<VariableDataValueBo> valueList = variableFindById.getValueList();
         List<String> phones = new ArrayList<>();
         for (VariableDataValueBo variableDataValueBo : valueList) {
-            if ("nearly6MonthsCallRecordTop10DirectContactList".equalsIgnoreCase(variableDataValueBo.getKey())) {
+            if ("nearly6MonthsCallRecordTop10DirectContactList".equalsIgnoreCase(variableDataValueBo.getKey())) {// TODO 通话记录前十key值自己定
                 JSONArray jsonArray = (JSONArray) variableDataValueBo.getValue();
                 for (Object o : jsonArray) {
                     phones.add((String) o);
                 }
             }
         }
+        //TODO 历史贷款用户手机号匹配
 //        Integer id = consumerLoanHistoryNaiveDomain.sendPhoneInfoReq(phones);
 //        if (id == null) {
 //            return null;
 //        }
-//        this.addMetaData(userDataId, new UserMetaDataBo(ChannelTypeEnum.CONSUMERLOANHISTORY));
-//        userDataService.addChannelData(userDataId, id, ChannelType.CONSUMERLOANHISTORY.getValue(),
-//                ChannelBizType.BT_CROSS_VALIDATION_PHONE.getValue());
-        return new UserDataStatusBo(UserDataStatusBo.DataStatus.SUCCESS, null);
+        //TODO 保存原始数据
+        Integer id = 1;
+        this.addMetaData(userDataId, new UserMetaDataBo(ChannelTypeEnum.CONSUMERLOANHISTORY, ChannelBizTypeEnum.CONSUMERLOANHISTORY_LOAN_RECORD, id,
+                DateUtil.dateToString(new Date(), DateUtil.ymdhmsSSSFormat)));
+        return new UserDataStatusBo(UserDataStatusBo.DataStatus.SUCCESS, id);
     }
 
     @Override
@@ -301,14 +303,14 @@ public class UserDataNativeDomain implements UserDataDomain {
         //获取用户信息
         UserData userData = userDataService.get(userDataId);
 
-//        Integer id = consumerLoanHistoryNaiveDomain.sendMasterInfoReq(userData.getName(), userData.getIdCard());
-//        if (id == null) {
-//            throw new BusinessException("交叉验证本人信息返回ID为空！");
-//        }
-//        userDataService.addChannelData(userDataId, id, ChannelType.CONSUMERLOANHISTORY.getValue(),
-//                ChannelBizType.BT_CROSS_VALIDATION_MASTER.getValue());
-//        return id;
-        return null;
+        //TODO 保存原始数据
+        Integer id = 1;//consumerLoanHistoryNaiveDomain.sendMasterInfoReq(userData.getName(), userData.getIdCard());
+        if (id == null) {
+            throw new BusinessException("交叉验证本人信息返回ID为空！");
+        }
+        this.addMetaData(userDataId, new UserMetaDataBo(ChannelTypeEnum.CONSUMERLOANHISTORY,
+                ChannelBizTypeEnum.PS_CROSS_VALIDATION_MASTER, id, DateUtil.dateToString(new Date(), DateUtil.ymdhmsSSSFormat)));
+        return id;
     }
 
     @Override
@@ -356,13 +358,14 @@ public class UserDataNativeDomain implements UserDataDomain {
                 }
             }
         }
-//        Integer id = consumerLoanHistoryNaiveDomain.sendPhoneInfoReq(phones);
-//        if (id == null) {
-//            return null;
-//        }
-//        userDataService.addChannelData(userDataId, id, ChannelType.CONSUMERLOANHISTORY.getValue(),
-//                ChannelBizType.BT_CROSS_VALIDATION_CONTACT.getValue());
-        return new UserDataStatusBo(UserDataStatusBo.DataStatus.SUCCESS, null);
+        //TODO 保存原始数据
+        Integer id = 1;//consumerLoanHistoryNaiveDomain.sendPhoneInfoReq(phones);
+        if (id == null) {
+            return null;
+        }
+        this.addMetaData(userDataId, new UserMetaDataBo(ChannelTypeEnum.CONSUMERLOANHISTORY, ChannelBizTypeEnum.PS_CROSS_VALIDATION_CONTACT, id,
+                DateUtil.dateToString(new Date(), DateUtil.ymdhmsSSSFormat)));
+        return new UserDataStatusBo(UserDataStatusBo.DataStatus.SUCCESS, id);
     }
 
     @Override
@@ -381,8 +384,8 @@ public class UserDataNativeDomain implements UserDataDomain {
         UserVariable curUserVariable = null;
         String curUserVariableCreatedTime = null;
         for (UserVariable userVariable : userVariableList) {
-            if (VariableType.USER_BASICINFO.getValue().equalsIgnoreCase(userVariable.getVariableType()) &&
-                    ChannelBizTypeEnum.APP_USER_BASE_INFO.getValue().equals(userVariable.getUserVariableDataFrom().getChannelBizType())) {
+            if (VariableType.USER_FASTTOUCH.getValue().equalsIgnoreCase(userVariable.getVariableType()) &&
+                    ChannelBizTypeEnum.PS_CROSS_VALIDATION_EMERGENCY1.getValue().equals(userVariable.getUserVariableDataFrom().getChannelBizType())) {
                 if(curUserVariableCreatedTime == null || curUserVariableCreatedTime.compareTo(userVariable.getCreateTime())<0) {
                     curUserVariable = userVariable;
                     curUserVariableCreatedTime = userVariable.getCreateTime();
@@ -409,8 +412,13 @@ public class UserDataNativeDomain implements UserDataDomain {
 //        if (id == null) {
 //            return null;
 //        }
-//        userDataService.addChannelData(userDataId, id, ChannelType.CONSUMERLOANHISTORY.getValue(),
-//                ChannelBizType.BT_CROSS_VALIDATION_EMERGENCY1.getValue());
+        //TODO 保存原始数据
+        Integer id = 1;//consumerLoanHistoryNaiveDomain.sendPhoneInfoReq(phones);
+        if (id == null) {
+            return null;
+        }
+        this.addMetaData(userDataId, new UserMetaDataBo(ChannelTypeEnum.CONSUMERLOANHISTORY, ChannelBizTypeEnum.PS_CROSS_VALIDATION_EMERGENCY1, id,
+                DateUtil.dateToString(new Date(), DateUtil.ymdhmsSSSFormat)));
 
         return new UserDataStatusBo(UserDataStatusBo.DataStatus.SUCCESS, null);
     }
@@ -425,7 +433,7 @@ public class UserDataNativeDomain implements UserDataDomain {
         if (userData == null) {
             throw new BusinessException("用户数据信息为空,查询参数：" + userDataId);
         }
-//        Integer bankPortraitId = bankPortraitDomain.sendBankPortraitReq(userData.getName(), userData.getIdCard(), userData.getAccount(), cardNo);
+//        Integer bankPortraitId = bankPortraitDomain.sendBankPortraitReq(userData.getName(), userData.getIdCard(), userData.getMobile(), cardNo);
 //        if (bankPortraitId == null) {
 //            throw new BusinessException("获取银联画像信息ID为空");
 //        }
@@ -450,12 +458,6 @@ public class UserDataNativeDomain implements UserDataDomain {
 
         //取这些变量集合最新的数据
         List<Integer> variableIdList = new ArrayList<>();
-        for (UserVariableBo userVariableBo : userVariableList) {
-            if(userVariableBo.getVariableType().getValue().equalsIgnoreCase("BT_USER_BASICINFO")){
-                variableIdList.add(userVariableBo.getVariableDataId());
-                break;
-            }
-        }
         for (UserVariableBo userVariableBo : userVariableList) {
             if(userVariableBo.getVariableType().getValue().equalsIgnoreCase("USER_BASICINFO")){
                 variableIdList.add(userVariableBo.getVariableDataId());

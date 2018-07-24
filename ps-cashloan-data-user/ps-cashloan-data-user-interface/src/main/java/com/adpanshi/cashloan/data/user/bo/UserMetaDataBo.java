@@ -18,6 +18,7 @@ public class UserMetaDataBo implements java.io.Serializable, BeanUtil.Conversion
     private String createTime;//原始数据创建时间
 
     public UserMetaDataBo() {}
+
     public UserMetaDataBo(ChannelTypeEnum channelType, ChannelBizTypeEnum channelBizType, Integer channelDataId, String createTime) {
         this.setChannelType(channelType);
         this.setChannelBizType(channelBizType);

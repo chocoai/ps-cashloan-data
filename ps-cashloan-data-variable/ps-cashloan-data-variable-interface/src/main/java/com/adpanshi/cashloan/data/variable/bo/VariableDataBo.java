@@ -16,8 +16,9 @@ public class VariableDataBo implements Serializable, BeanUtil.ConversionCustomiz
     private static final long serialVersionUID = 1L;
 
     private Integer fid;//主键
-    private String idcard;//身份证
-    private String account;//账号
+    private String aadhaarNo;//aadhaarNo编号
+    private String email;//邮箱
+    private String mobile;//手机号
     private String name;//姓名
     private String equipmentFingerpints;//设备指纹
     private VariableType variableType;//变量类型
@@ -27,7 +28,7 @@ public class VariableDataBo implements Serializable, BeanUtil.ConversionCustomiz
     private String createTime;//创建时间
 
     public VariableDataBo() {
-        valueList = new ArrayList<VariableDataValueBo>();
+        valueList = new ArrayList<>();
     }
 
     public Integer getFid() {
@@ -38,20 +39,20 @@ public class VariableDataBo implements Serializable, BeanUtil.ConversionCustomiz
         this.fid = id;
     }
 
-    public String getIdcard() {
-        return idcard;
+    public String getAadhaarNo() {
+        return aadhaarNo;
     }
 
-    public void setIdcard(String idcard) {
-        this.idcard = idcard;
+    public void setAadhaarNo(String aadhaarNo) {
+        this.aadhaarNo = aadhaarNo;
     }
 
-    public String getAccount() {
-        return account;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getName() {
@@ -123,6 +124,13 @@ public class VariableDataBo implements Serializable, BeanUtil.ConversionCustomiz
         this.dataFrom = dataFrom;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @Override
     public void convertOthers(Object o) {
@@ -139,6 +147,7 @@ public class VariableDataBo implements Serializable, BeanUtil.ConversionCustomiz
             this.setVariableType(VariableType.getByValue((String) variableType));
         }
     }
+
 
 }
 

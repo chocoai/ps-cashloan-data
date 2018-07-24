@@ -11,12 +11,14 @@ public enum ChannelBizTypeEnum implements ContentEnum {
     PS_BANK_PORTRAIT("银联画像",92),
     PS_TWO_ELEMENTS_VERIFY("二元素验证", 91),
     APP_USER_BASE_INFO("APP_用户基本信息",100),
-    CONSUMERLOANHISTORY_LOAN_RECORD("消费贷历史数据_贷款记录", 111),
+    CONSUMERLOANHISTORY_LOAN_RECORD("历史数据_贷款记录", 111),
     PS_CROSS_VALIDATION_PHONE("联系top10手机号交叉验证",120),
     PS_CROSS_VALIDATION_MASTER("本人信息交叉验证",121),
     PS_CROSS_VALIDATION_CONTACT("通讯录交叉验证",122),
     PS_CROSS_VALIDATION_EMERGENCY1("紧急联系人1交叉验证",123),
-    PS_COMPLEX("综合信息校验",130);
+    PS_COMPLEX("综合信息校验",130),
+
+    ;
 
 
     private String content;

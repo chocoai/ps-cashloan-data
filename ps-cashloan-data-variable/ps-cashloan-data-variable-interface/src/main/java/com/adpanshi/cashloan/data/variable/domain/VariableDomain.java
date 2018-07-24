@@ -17,12 +17,12 @@ public interface VariableDomain {
      * @param channelTypeEnum           渠道类型
      * @param channelBizTypeEnum        渠道业务类型
      * @param channelDataId         渠道数据主键
-     * @param account               用户账号
+     * @param mobile               用户账号
      * @param aadhaarNo             用户身份证
      * @param name                  用户姓名
      * @param equipmentFingerpints  设备指纹
      */
-    List<VariableDataBo> extractVariable(ChannelTypeEnum channelTypeEnum, ChannelBizTypeEnum channelBizTypeEnum, Integer channelDataId, String channelDataCreateTime, String account, String aadhaarNo, String name, String equipmentFingerpints);
+    List<VariableDataBo> extractVariable(ChannelTypeEnum channelTypeEnum, ChannelBizTypeEnum channelBizTypeEnum, Integer channelDataId, String channelDataCreateTime, String mobile, String email, String aadhaarNo, String name, String equipmentFingerpints);
 
     /**
      * 根据ID从数据库查询变量

@@ -19,7 +19,7 @@ public class AppDataTest {
     @Test
     public void appDataTest(){
         String originalData="{ \"marriageState\":0, \"residentProvince\":\"浙江\", \"residentCity\": \"杭州\", \"residentAddress\": \"祥园路\", \"employer\": \"盘石\", \"emergencyContactName\": \"刘\", \"emergencyContactRel\": \"自己\", \"lastCity\": \"杭州\" }";
-        remote.addAppData("周善文","362529199008212513","zsw","djflwejlepo",  originalData);
+        remote.addAppData("周善文","362529199008212513","zsw","djflwejlepo","",  originalData);
 
     }
 

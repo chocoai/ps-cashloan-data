@@ -16,8 +16,9 @@ public class FeatureDataBo implements Serializable ,BeanUtil.ConversionCustomizb
     private static final long serialVersionUID = 1L;
 
     private Integer fid;//主键
-    private String idcard;//身份证
-    private String account;//账号
+    private String aadhaarNo;//aadhaarNo编号
+    private String mobile;//手机号
+    private String email;//邮箱
     private String name;//姓名
     private String equipmentFingerpints;//设备指纹
     private FeatureType featureType;//特征类型
@@ -55,12 +56,12 @@ public class FeatureDataBo implements Serializable ,BeanUtil.ConversionCustomizb
         this.equipmentFingerpints = equipmentFingerpints;
     }
 
-    public String getIdcard() {
-        return idcard;
+    public String getAadhaarNo() {
+        return aadhaarNo;
     }
 
-    public void setIdcard(String idcard) {
-        this.idcard = idcard;
+    public void setAadhaarNo(String aadhaarNo) {
+        this.aadhaarNo = aadhaarNo;
     }
 
     public Integer getFid() {
@@ -103,12 +104,20 @@ public class FeatureDataBo implements Serializable ,BeanUtil.ConversionCustomizb
         this.dataFromList = dataFromList;
     }
 
-    public String getAccount() {
-        return account;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

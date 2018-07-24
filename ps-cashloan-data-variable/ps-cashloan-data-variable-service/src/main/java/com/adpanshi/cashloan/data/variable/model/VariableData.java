@@ -12,7 +12,8 @@ public class VariableData implements Serializable {
 
     private Integer fid;//主键
     private String aadhaarNo;//aadhaar编号
-    private String account;//账号
+    private String mobile;//手机号
+    private String email;//邮箱
     private String name;//姓名
     private String equipmentFingerpints;//设备指纹
     private String variableType;//变量类型
@@ -57,12 +58,12 @@ public class VariableData implements Serializable {
         this.aadhaarNo = aadhaarNo;
     }
 
-    public String getAccount() {
-        return account;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getName() {
@@ -117,6 +118,11 @@ public class VariableData implements Serializable {
         this.dataFrom = dataFrom;
     }
 
+    public String getEmail() {
+        return email;
+    }
 
-
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

@@ -44,8 +44,8 @@ public class FeatureNativeDomain implements FeatureDomain {
         FeatureData featureData = featureDataService.findDataById(dataId);
         FeatureDataBo featureDataBo = new FeatureDataBo();
         featureDataBo.setFid(featureData.getFid());
-        featureDataBo.setAccount(featureData.getAccount());
-        featureDataBo.setIdcard(featureData.getIdcard());
+        featureDataBo.setMobile(featureData.getMobile());
+        featureDataBo.setAadhaarNo(featureData.getAadhaarNo());
         featureDataBo.setName(featureData.getName());
         List<DataFromBo> dataFromBos = new ArrayList<>();
         List<FeatureDataValueBo> featureDataValueBos = new ArrayList<>();
@@ -73,7 +73,7 @@ public class FeatureNativeDomain implements FeatureDomain {
     }
 
     @Override
-    public FeatureDataBo extractFeature(List<DataFromBo> dataFromBoList, FeatureType featureType, String account, String aadhaarNo, String name, String equipmentFingerpints) {
+    public FeatureDataBo extractFeature(List<DataFromBo> dataFromBoList, FeatureType featureType, String mobile, String email, String aadhaarNo, String name, String equipmentFingerpints) {
         FeatureExtractConfig config = featureExtractConfigService.getByFeatureType(featureType);
         if (config == null) {
             return null;
@@ -103,8 +103,9 @@ public class FeatureNativeDomain implements FeatureDomain {
         }
         FeatureData featureData = new FeatureData();
         featureData.setFid(IdGenerator.getId(CollectionName.FEATURE_DATA));
-        featureData.setIdcard(aadhaarNo);
-        featureData.setAccount(account);
+        featureData.setAadhaarNo(aadhaarNo);
+        featureData.setMobile(mobile);
+        featureData.setEmail(email);
         featureData.setName(name);
         featureData.setEquipmentFingerpints(equipmentFingerpints);
         featureData.setFeatureType(featureType.getValue());

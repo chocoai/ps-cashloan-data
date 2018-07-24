@@ -38,7 +38,7 @@ public class VariableNativeDomain implements VariableDomain{
 
     @Override
     public List<VariableDataBo> extractVariable(ChannelTypeEnum channelTypeEnum, ChannelBizTypeEnum channelBizTypeEnum, Integer channelDataId,
-                                                String channelDataCreateTime, String account, String aadhaarNo,
+                                                String channelDataCreateTime, String mobile, String email, String aadhaarNo,
                                                 String name, String equipmentFingerpints) {
         List<VariableExtractConfig> configList = variableExtractConfigService.findByChannelTypeAndChannelBizType(channelTypeEnum, channelBizTypeEnum);
         DataFrom dataFrom = new DataFrom();
@@ -46,13 +46,14 @@ public class VariableNativeDomain implements VariableDomain{
         dataFrom.setChannelBizType(channelBizTypeEnum.getValue());
         dataFrom.setChannelDataId(channelDataId);
         dataFrom.setCreateTime(channelDataCreateTime);
-        List<VariableData> variableDataList = new ArrayList<VariableData>();
+        List<VariableData> variableDataList = new ArrayList<>();
         for (VariableExtractConfig config : configList) {
             VariableExtractor variableExtractor = variableExtractorFactory.getVariableExtractor(config.getVariableExtractVersion());
             List<VariableDataValue> valueList = variableExtractor.doExtract(channelDataId);
             VariableData variableData = new VariableData();
             variableData.setAadhaarNo(aadhaarNo);
-            variableData.setAccount(account);
+            variableData.setMobile(mobile);
+            variableData.setEmail(email);
             variableData.setName(name);
             variableData.setEquipmentFingerpints(equipmentFingerpints);
             variableData.setVariableType(config.getVariableType());
@@ -70,7 +71,7 @@ public class VariableNativeDomain implements VariableDomain{
 
     @Override
     public List<VariableDataBo> getVariableList(List<Integer> variableDataIdList) {
-        List<VariableDataBo> list = new ArrayList<VariableDataBo>();
+        List<VariableDataBo> list = new ArrayList<>();
         for (int i = 0; i < variableDataIdList.size(); i++) {
             Integer dataId = variableDataIdList.get(i);
             VariableData variableData = variableDataService.findDataById(dataId);
