@@ -14,11 +14,6 @@
     <dependencies>
         <dependency>
             <groupId>com.adpanshi</groupId>
-            <artifactId>common</artifactId>
-            <version>1.0.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.adpanshi</groupId>
             <artifactId>ps-cashloan-data-variable-interface</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

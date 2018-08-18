@@ -3,6 +3,7 @@ package com.adpanshi.cashloan.data.feature.domain;
 import com.adpanshi.cashloan.data.feature.bo.DataFromBo;
 import com.adpanshi.cashloan.data.feature.bo.FeatureDataBo;
 import com.adpanshi.cashloan.data.feature.enums.FeatureType;
+import com.adpanshi.cashloan.data.variable.bo.VariableDataBo;
 
 import java.util.List;
 
@@ -25,4 +26,11 @@ public interface FeatureDomain {
      * @return
      */
     FeatureDataBo getFeatureDataById(Integer dataId);
+
+    /**
+     * 根据ID从数据库查询变量
+     * @param featureDataIdList 特征ID集合
+     * @return monggo中取出的变量LIST
+     */
+    List<FeatureDataBo> findFeatureList(List<Integer> featureDataIdList);
 }

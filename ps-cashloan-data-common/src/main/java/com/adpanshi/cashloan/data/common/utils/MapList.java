@@ -131,8 +131,8 @@ public class MapList<K, V> implements Serializable {
      * @param value 按照此value值生产List集合
      * @return
      */
-    public Map<Object, List<BigDecimal>> ListToMap(List<Map<String, Object>> lists, String key, String value) {
-        Map<Object, List<BigDecimal>> resultMap = new HashMap<Object, List<BigDecimal>>();
+    public Map<Object, List<BigDecimal>> listToMap(List<Map<String, Object>> lists, String key, String value) {
+        Map<Object, List<BigDecimal>> resultMap = new HashMap<Object, List<BigDecimal>>(16);
 
         for (Map<String, Object> map : lists) {
             if (!resultMap.containsKey(map.get(key))) {

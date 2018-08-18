@@ -3,10 +3,9 @@ package com.adpanshi.cashloan.data.appdata.pojo;
 import java.io.Serializable;
 
 /**
- * app原始数据
- *  Created by zsw on 2018/6/29 0029.
+ * Created by zsw on 2018/8/2 0002.
  */
-public class AppData implements Serializable{
+public class AppData implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**

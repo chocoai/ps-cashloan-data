@@ -3,15 +3,12 @@ package com.adpanshi.cashloan.data.appdata.bo;
 import com.adpanshi.cashloan.common.utils.BeanUtil;
 import com.adpanshi.cashloan.common.utils.DateUtil;
 
-import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
- *  Created by zsw on 2018/6/29 0029.
+ * Created by zsw on 2018/8/2 0002.
  */
-public class AppDataBo implements Serializable, BeanUtil.ConversionCustomizble {
-
+public class AppDataBo implements java.io.Serializable, BeanUtil.ConversionCustomizble {
     private static final long serialVersionUID = 1L;
     /**
      * 主键

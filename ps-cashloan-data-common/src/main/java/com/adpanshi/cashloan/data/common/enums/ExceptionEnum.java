@@ -7,6 +7,9 @@ import com.adpanshi.cashloan.common.enums.ContentEnum;
  */
 public enum ExceptionEnum  implements ContentEnum {
 
+    /**
+     * 非法传参
+     */
     error_param("非法传参", 10001),;
 
     private String content;
@@ -17,6 +20,7 @@ public enum ExceptionEnum  implements ContentEnum {
         this.value = value;
     }
 
+    @Override
     public boolean equalsValue(Integer value) {
         return (value != null) && (value.equals(getValue()));
     }
@@ -31,10 +35,12 @@ public enum ExceptionEnum  implements ContentEnum {
         return null;
     }
 
+    @Override
     public String getContent() {
         return this.content;
     }
 
+    @Override
     public Integer getValue() {
         return this.value;
     }
@@ -42,7 +48,7 @@ public enum ExceptionEnum  implements ContentEnum {
 
     @Override
     public String toString() {
-        return "ChannelTypeEnum{" +
+        return "ChannelType{" +
                 "content='" + content + '\'' +
                 ", value=" + value +
                 '}';

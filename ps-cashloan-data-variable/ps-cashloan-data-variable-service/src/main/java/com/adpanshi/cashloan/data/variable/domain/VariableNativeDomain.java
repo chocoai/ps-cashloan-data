@@ -3,8 +3,8 @@ package com.adpanshi.cashloan.data.variable.domain;
 import com.adpanshi.cashloan.common.utils.BeanUtil;
 import com.adpanshi.cashloan.common.utils.DateUtil;
 import com.adpanshi.cashloan.data.common.constant.CollectionName;
-import com.adpanshi.cashloan.data.common.enums.ChannelBizTypeEnum;
-import com.adpanshi.cashloan.data.common.enums.ChannelTypeEnum;
+import com.adpanshi.cashloan.data.common.enums.ChannelBizType;
+import com.adpanshi.cashloan.data.common.enums.ChannelType;
 import com.adpanshi.cashloan.data.variable.bo.VariableDataBo;
 
 import javax.annotation.Resource;
@@ -37,13 +37,13 @@ public class VariableNativeDomain implements VariableDomain{
     private VariableDataService variableDataService;
 
     @Override
-    public List<VariableDataBo> extractVariable(ChannelTypeEnum channelTypeEnum, ChannelBizTypeEnum channelBizTypeEnum, Integer channelDataId,
+    public List<VariableDataBo> extractVariable(ChannelType channelType, ChannelBizType channelBizType, Integer channelDataId,
                                                 String channelDataCreateTime, String mobile, String email, String aadhaarNo,
                                                 String name, String equipmentFingerpints) {
-        List<VariableExtractConfig> configList = variableExtractConfigService.findByChannelTypeAndChannelBizType(channelTypeEnum, channelBizTypeEnum);
+        List<VariableExtractConfig> configList = variableExtractConfigService.findByChannelTypeAndChannelBizType(channelType, channelBizType);
         DataFrom dataFrom = new DataFrom();
-        dataFrom.setChannelType(channelTypeEnum.getValue());
-        dataFrom.setChannelBizType(channelBizTypeEnum.getValue());
+        dataFrom.setChannelType(channelType.getValue());
+        dataFrom.setChannelBizType(channelBizType.getValue());
         dataFrom.setChannelDataId(channelDataId);
         dataFrom.setCreateTime(channelDataCreateTime);
         List<VariableData> variableDataList = new ArrayList<>();
@@ -70,7 +70,7 @@ public class VariableNativeDomain implements VariableDomain{
 
 
     @Override
-    public List<VariableDataBo> getVariableList(List<Integer> variableDataIdList) {
+    public List<VariableDataBo> findVariableList(List<Integer> variableDataIdList) {
         List<VariableDataBo> list = new ArrayList<>();
         for (int i = 0; i < variableDataIdList.size(); i++) {
             Integer dataId = variableDataIdList.get(i);

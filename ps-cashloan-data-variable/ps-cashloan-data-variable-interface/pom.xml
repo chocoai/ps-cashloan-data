@@ -11,14 +11,13 @@
     <packaging>jar</packaging>
 
     <artifactId>ps-cashloan-data-variable-interface</artifactId>
+
     <dependencies>
         <dependency>
             <groupId>com.adpanshi</groupId>
             <artifactId>ps-cashloan-data-common</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-
     </dependencies>
-
 
 </project>

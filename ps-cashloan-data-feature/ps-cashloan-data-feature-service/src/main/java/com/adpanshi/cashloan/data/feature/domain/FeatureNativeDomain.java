@@ -73,6 +73,17 @@ public class FeatureNativeDomain implements FeatureDomain {
     }
 
     @Override
+    public List<FeatureDataBo> findFeatureList(List<Integer> featureDataIdList) {
+        List<FeatureDataBo> list = new ArrayList<>();
+        for (int i = 0; i < featureDataIdList.size(); i++) {
+            Integer dataId = featureDataIdList.get(i);
+            FeatureDataBo featureDataBo = this.getFeatureDataById(dataId);
+            list.add(featureDataBo);
+        }
+        return list;
+    }
+
+    @Override
     public FeatureDataBo extractFeature(List<DataFromBo> dataFromBoList, FeatureType featureType, String mobile, String email, String aadhaarNo, String name, String equipmentFingerpints) {
         FeatureExtractConfig config = featureExtractConfigService.getByFeatureType(featureType);
         if (config == null) {

@@ -2,8 +2,8 @@ package com.adpanshi.cashloan.data.user.bo;
 
 
 import com.adpanshi.cashloan.common.utils.BeanUtil;
-import com.adpanshi.cashloan.data.common.enums.ChannelBizTypeEnum;
-import com.adpanshi.cashloan.data.common.enums.ChannelTypeEnum;
+import com.adpanshi.cashloan.data.common.enums.ChannelBizType;
+import com.adpanshi.cashloan.data.common.enums.ChannelType;
 
 /**
  * 用户元数据
@@ -12,32 +12,32 @@ import com.adpanshi.cashloan.data.common.enums.ChannelTypeEnum;
 public class UserMetaDataBo implements java.io.Serializable, BeanUtil.ConversionCustomizble {
     private static final long serialVersionUID = 1L;
 
-    private ChannelTypeEnum channelType;        //渠道类型
-    private ChannelBizTypeEnum channelBizType;     //渠道业务类型
+    private ChannelType channelType;        //渠道类型
+    private ChannelBizType channelBizType;     //渠道业务类型
     private Integer channelDataId;      //渠道数据主键
     private String createTime;//原始数据创建时间
 
     public UserMetaDataBo() {}
 
-    public UserMetaDataBo(ChannelTypeEnum channelType, ChannelBizTypeEnum channelBizType, Integer channelDataId, String createTime) {
+    public UserMetaDataBo(ChannelType channelType, ChannelBizType channelBizType, Integer channelDataId, String createTime) {
         this.setChannelType(channelType);
         this.setChannelBizType(channelBizType);
         this.setChannelDataId(channelDataId);
         this.setCreateTime(createTime);
     }
-    public ChannelTypeEnum getChannelType() {
+    public ChannelType getChannelType() {
         return channelType;
     }
 
-    public void setChannelType(ChannelTypeEnum channelType) {
+    public void setChannelType(ChannelType channelType) {
         this.channelType = channelType;
     }
 
-    public ChannelBizTypeEnum getChannelBizType() {
+    public ChannelBizType getChannelBizType() {
         return channelBizType;
     }
 
-    public void setChannelBizType(ChannelBizTypeEnum channelBizType) {
+    public void setChannelBizType(ChannelBizType channelBizType) {
         this.channelBizType = channelBizType;
     }
 
@@ -61,12 +61,12 @@ public class UserMetaDataBo implements java.io.Serializable, BeanUtil.Conversion
     public void convertOthers(Object o) {
         Object channelType = BeanUtil.getPropValue(o, "channelType");
         if (channelType != null && channelType instanceof Integer) {
-            this.setChannelType(ChannelTypeEnum.getByValue((Integer) channelType));
+            this.setChannelType(ChannelType.getByValue((Integer) channelType));
         }
 
         Object channelBizType = BeanUtil.getPropValue(o, "channelBizType");
         if (channelBizType != null && channelBizType instanceof Integer) {
-            this.setChannelBizType(ChannelBizTypeEnum.getByValue((Integer) channelBizType));
+            this.setChannelBizType(ChannelBizType.getByValue((Integer) channelBizType));
         }
     }
 }

@@ -7,6 +7,9 @@ import com.adpanshi.cashloan.common.enums.ContentEnum;
  */
 public enum DataTypeEnum implements ContentEnum {
 
+    /**
+     * 整数类型
+     */
     INTEGER("整数", 10),
     DOUBLE("小数", 20),
     DATE("日期", 30),
@@ -25,6 +28,7 @@ public enum DataTypeEnum implements ContentEnum {
         this.value = value;
     }
 
+    @Override
     public boolean equalsValue(Integer value) {
         return (value != null) && (value.equals(getValue()));
     }
@@ -39,10 +43,12 @@ public enum DataTypeEnum implements ContentEnum {
         return null;
     }
 
+    @Override
     public String getContent() {
         return this.content;
     }
 
+    @Override
     public Integer getValue() {
         return this.value;
     }
@@ -50,7 +56,7 @@ public enum DataTypeEnum implements ContentEnum {
 
     @Override
     public String toString() {
-        return "ChannelTypeEnum{" +
+        return "ChannelType{" +
                 "content='" + content + '\'' +
                 ", value=" + value +
                 '}';

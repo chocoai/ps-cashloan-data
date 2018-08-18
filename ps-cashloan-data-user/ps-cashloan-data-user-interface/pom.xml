@@ -11,13 +11,34 @@
     <packaging>jar</packaging>
     <artifactId>ps-cashloan-data-user-interface</artifactId>
 
+
     <dependencies>
         <dependency>
             <groupId>com.adpanshi</groupId>
             <artifactId>ps-cashloan-data-feature-interface</artifactId>
-            <version>${project.version}</version>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId> ps-cashloan-data-thirdparty-moxie-interface</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-thirdparty-pancard-interface</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-thirdparty-equifax-interface</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-decision-interface</artifactId>
+            <version>1.0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
-
 
 </project>

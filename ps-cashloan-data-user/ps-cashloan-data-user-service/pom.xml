@@ -33,5 +33,21 @@
             <artifactId>ps-cashloan-data-appdata-interface</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-thirdparty-tdbody-service</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.adpanshi</groupId>-->
+            <!--<artifactId>ps-cashloan-decision-interface</artifactId>-->
+            <!--<version>${project.parent.version}</version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-consumerloanhistory-interface</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 </project>

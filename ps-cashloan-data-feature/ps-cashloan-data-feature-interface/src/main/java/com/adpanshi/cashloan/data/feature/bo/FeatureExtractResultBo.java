@@ -13,10 +13,22 @@ import java.util.List;
 public class FeatureExtractResultBo implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String featureExtractVersion;   //特征抽取版本
-    private FeatureType featureType;        //特征类型
-    private Integer featureDataId;          //特征数据主键
-    private List<DataFromBo> dataFromBoList;//特征数据来源
+    /**
+     * 特征抽取版本
+     */
+    private String featureExtractVersion;
+    /**
+     *特征类型
+     */
+    private FeatureType featureType;
+    /**
+     * 特征数据主键
+     */
+    private Integer featureDataId;
+    /**
+     * 特征数据来源
+     */
+    private List<DataFromBo> dataFromBoList;
 
     public String getFeatureExtractVersion() {
         return featureExtractVersion;

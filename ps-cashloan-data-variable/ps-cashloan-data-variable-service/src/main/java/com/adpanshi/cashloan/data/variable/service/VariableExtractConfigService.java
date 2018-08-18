@@ -2,8 +2,8 @@ package com.adpanshi.cashloan.data.variable.service;
 
 import com.adpanshi.cashloan.common.mongo.MongoUtil;
 import com.adpanshi.cashloan.data.common.constant.CollectionName;
-import com.adpanshi.cashloan.data.common.enums.ChannelBizTypeEnum;
-import com.adpanshi.cashloan.data.common.enums.ChannelTypeEnum;
+import com.adpanshi.cashloan.data.common.enums.ChannelBizType;
+import com.adpanshi.cashloan.data.common.enums.ChannelType;
 import com.adpanshi.cashloan.data.variable.model.VariableExtractConfig;
 import com.mongodb.client.model.Filters;
 import org.bson.conversions.Bson;
@@ -26,11 +26,11 @@ public class VariableExtractConfigService {
 
     /**
      *  根据渠道和渠道业务类型查找
-     * @param channelTypeEnum 渠道类型
-     * @param channelBizTypeEnum 渠道业务类型
+     * @param channelType 渠道类型
+     * @param channelBizType 渠道业务类型
      */
-    public List<VariableExtractConfig> findByChannelTypeAndChannelBizType(ChannelTypeEnum channelTypeEnum, ChannelBizTypeEnum channelBizTypeEnum) {
-        Bson bson = Filters.and(new Bson[]{Filters.eq("channelType", channelTypeEnum.getValue()), Filters.eq("channelBizType", channelBizTypeEnum.getValue())});
+    public List<VariableExtractConfig> findByChannelTypeAndChannelBizType(ChannelType channelType, ChannelBizType channelBizType) {
+        Bson bson = Filters.and(new Bson[]{Filters.eq("channelType", channelType.getValue()), Filters.eq("channelBizType", channelBizType.getValue())});
         List<VariableExtractConfig> variableExtractConfigs =  mongoUtil.find(CollectionName.VARIABLE_EXTRACT_CONFIG, bson, VariableExtractConfig.class);
         return variableExtractConfigs.isEmpty() ? new ArrayList<VariableExtractConfig>() : variableExtractConfigs;
     }

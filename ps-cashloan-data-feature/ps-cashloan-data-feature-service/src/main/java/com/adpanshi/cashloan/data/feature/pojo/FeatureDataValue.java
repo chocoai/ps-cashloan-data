@@ -52,8 +52,9 @@ public class FeatureDataValue extends MongoBean implements Serializable {
     }
 
     public void setValue(Object value) {
-        if(value==null)
-            value="";
+        if(value==null) {
+            value = "";
+        }
         this.value = value;
     }
 

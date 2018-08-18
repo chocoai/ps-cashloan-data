@@ -22,8 +22,6 @@
     <import resource="classpath:applicationContext-disconf.xml"/>
     <import resource="classpath:applicationContext-dubbo.xml"/>
     <import resource="classpath:applicationContext-mongo.xml"/>
-    <import resource="classpath:applicationContext-thread-pool.xml"/>
     <import resource="classpath:applicationContext-adapter.xml"/>
-    <import resource="classpath:applicationContext-db.xml"/>
 
 </beans>

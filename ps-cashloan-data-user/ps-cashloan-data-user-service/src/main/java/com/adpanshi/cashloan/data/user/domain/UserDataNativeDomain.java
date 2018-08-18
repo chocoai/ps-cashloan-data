@@ -3,13 +3,20 @@ package com.adpanshi.cashloan.data.user.domain;
 import com.adpanshi.cashloan.common.utils.BeanUtil;
 import com.adpanshi.cashloan.common.utils.DateUtil;
 import com.adpanshi.cashloan.data.appdata.domain.AppDataDomain;
-import com.adpanshi.cashloan.data.common.enums.ChannelBizTypeEnum;
-import com.adpanshi.cashloan.data.common.enums.ChannelTypeEnum;
+import com.adpanshi.cashloan.data.common.enums.ChannelBizType;
+import com.adpanshi.cashloan.data.common.enums.ChannelType;
 import com.adpanshi.cashloan.data.common.exception.BusinessException;
-import com.adpanshi.cashloan.data.common.utils.CheckUtil;
+import com.adpanshi.cashloan.data.cunsumerloanhistory.domain.LoanHistoryDomain;
 import com.adpanshi.cashloan.data.feature.bo.DataFromBo;
 import com.adpanshi.cashloan.data.feature.bo.FeatureDataBo;
+import com.adpanshi.cashloan.data.feature.bo.FeatureDataValueBo;
 import com.adpanshi.cashloan.data.feature.domain.FeatureDomain;
+import com.adpanshi.cashloan.data.thirdparty.equifax.domain.EquifaxCreditReportDomain;
+import com.adpanshi.cashloan.data.thirdparty.moxie.domain.MoxieSIMDomain;
+import com.adpanshi.cashloan.data.thirdparty.moxie.domain.MoxieSNSDomain;
+import com.adpanshi.cashloan.data.thirdparty.pancard.bo.PanCardDataBo;
+import com.adpanshi.cashloan.data.thirdparty.pancard.domain.PanCardDomain;
+import com.adpanshi.cashloan.data.thirdparty.tdbody.domain.TDBodyGuardDomain;
 import com.adpanshi.cashloan.data.user.bo.*;
 import com.adpanshi.cashloan.data.user.pojo.*;
 import com.adpanshi.cashloan.data.user.service.UserDataService;
@@ -17,9 +24,13 @@ import com.adpanshi.cashloan.data.variable.bo.VariableDataBo;
 import com.adpanshi.cashloan.data.variable.bo.VariableDataValueBo;
 import com.adpanshi.cashloan.data.variable.domain.VariableDomain;
 import com.adpanshi.cashloan.data.variable.enums.VariableType;
+import com.adpanshi.cashloan.decision.bo.ArcBorrowRuleResultBo;
+import com.adpanshi.cashloan.decision.domain.DecisionDomain;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import tool.util.StringUtil;
 
@@ -32,18 +43,40 @@ import java.util.*;
  */
 @Service("userDataDomain")
 public class UserDataNativeDomain implements UserDataDomain {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDataNativeDomain.class);
 
     @Resource
     private UserDataService userDataService;
 
     @Resource
-    private AppDataDomain appDataNativeDomain;
+    private AppDataDomain appDataDomain;
 
     @Resource
     private VariableDomain variableDomain;
 
     @Resource
     private FeatureDomain featureDomain;
+
+    @Resource
+    private PanCardDomain panCardDomain;
+
+    @Resource
+    private DecisionDomain decisionDomain;
+
+    @Resource
+    private LoanHistoryDomain loanHistoryDomain;
+
+    @Resource
+    private EquifaxCreditReportDomain equifaxCreditReportDomain;
+
+    @Resource
+    private MoxieSIMDomain moxieSIMDomain;
+
+    @Resource
+    private MoxieSNSDomain moxieSNSDomain;
+
+    @Resource
+    private TDBodyGuardDomain tdBodyGuardDomain;
     /**
      * 创建用户数据
      */
@@ -87,23 +120,6 @@ public class UserDataNativeDomain implements UserDataDomain {
         userDataService.modify(userData);
     }
 
-    @Override
-    public void addMetaData(Integer userDataId, UserMetaDataBo userMetaDataBo) {
-        //获取用户数据
-        UserData userData = userDataService.get(userDataId);
-        CheckUtil.checkNotNull(userData, "用户原始数据为空！userDataId = " + userDataId);
-        //获取用户现有原始数据
-        List<UserMetaData> userMetaDataList = userData.getUserMetaDataList();
-        if(CheckUtil.checkListIsNullOrIsEmpty(userMetaDataList)) {
-            userMetaDataList = new ArrayList<>();
-            userData.setUserMetaDataList(userMetaDataList);
-        }
-        UserMetaData userMetaData = BeanUtil.convert(userMetaDataBo, UserMetaData.class);
-
-        userMetaDataList.add(userMetaData);
-        userDataService.modify(userData);
-    }
-
     /**
      * 填充用户基本信息
      */
@@ -111,14 +127,72 @@ public class UserDataNativeDomain implements UserDataDomain {
     public Integer fillUserBaseInfo(Integer userDataId, String originalData) {
         //保存用户基本信息原始数据并返回ID
         UserDataBo userDataBo = this.get(userDataId);
-        Integer id = appDataNativeDomain.addAppData(userDataBo.getName(), userDataBo.getAadhaarNo(), userDataBo.getMobile(), userDataBo.getEmail(), userDataBo.getDeviceFingerprint(), originalData);
+        if(userDataBo == null){
+            throw new BusinessException("用户数据信息不存在");
+        }
+        Integer id = appDataDomain.addAppUserBaseInfoData(userDataBo.getName(), userDataBo.getAadhaarNo(), userDataBo.getMobile(), userDataBo.getEmail(), userDataBo.getDeviceFingerprint(), originalData);
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, id, ChannelType.PSAPP.getValue(), ChannelBizType.APP_USER_BASE_INFO.getValue());
+        return id;
+    }
 
-        UserMetaDataBo userMetaDataBo = new UserMetaDataBo();
-        userMetaDataBo.setChannelType(ChannelTypeEnum.PSAPP);
-        userMetaDataBo.setChannelBizType(ChannelBizTypeEnum.APP_USER_BASE_INFO);
-        userMetaDataBo.setChannelDataId(id);
-        userMetaDataBo.setCreateTime(DateUtil.dateToString(new Date(), DateUtil.ymdhmsSSSFormat));
-        this.addMetaData(userDataId, userMetaDataBo);
+    /**
+     * 填充用户通讯录
+     *
+     * @param userDataId    用户数据ID
+     * @param originalData  原始数据
+     * @return  原始数据ID
+     */
+    @Override
+    public Integer fillCommunication(Integer userDataId, String originalData) {
+        //保存用户基本信息原始数据并返回ID
+        UserDataBo userDataBo = this.get(userDataId);
+        if(userDataBo == null){
+            throw new BusinessException("用户数据信息不存在");
+        }
+        Integer id = appDataDomain.addAppCommunicationData(userDataBo.getName(), userDataBo.getAadhaarNo(), userDataBo.getMobile(), userDataBo.getEmail(), userDataBo.getDeviceFingerprint(), originalData);
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, id, ChannelType.PSAPP.getValue(), ChannelBizType.APP_COMMUNICATION.getValue());
+        return id;
+    }
+
+    /**
+     * 填充app应用
+     *
+     * @param userDataId    用户数据ID
+     * @param originalData  原始数据
+     * @return  原始数据ID
+     */
+    @Override
+    public Integer fillApplication(Integer userDataId, String originalData) {
+        //保存用户基本信息原始数据并返回ID
+        UserDataBo userDataBo = this.get(userDataId);
+        if(userDataBo == null){
+            throw new BusinessException("用户数据信息不存在");
+        }
+        Integer id = appDataDomain.addAppApplicationData(userDataBo.getName(), userDataBo.getAadhaarNo(), userDataBo.getMobile(), userDataBo.getEmail(), userDataBo.getDeviceFingerprint(), originalData);
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, id, ChannelType.PSAPP.getValue(), ChannelBizType.APP_APPLICATION.getValue());
+        return id;
+    }
+
+    /**
+     * 填充app紧急联系人
+     *
+     * @param userDataId    用户数据ID
+     * @param originalData  原始数据
+     * @return  原始数据ID
+     */
+    @Override
+    public Integer fillEmergency(Integer userDataId, String originalData) {
+        //保存用户紧急联系人原始数据并返回ID
+        UserDataBo userDataBo = this.get(userDataId);
+        if(userDataBo == null){
+            throw new BusinessException("用户数据信息不存在");
+        }
+        Integer id = appDataDomain.addAppEmergencyData(userDataBo.getName(), userDataBo.getAadhaarNo(), userDataBo.getMobile(), userDataBo.getEmail(), userDataBo.getDeviceFingerprint(), originalData);
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, id, ChannelType.PSAPP.getValue(), ChannelBizType.APP_EMERGENCY.getValue());
         return id;
     }
 
@@ -126,7 +200,7 @@ public class UserDataNativeDomain implements UserDataDomain {
      * 抽取变量
      */
     @Override
-    public List<UserVariableBo> extractVariable(Integer userDataId, ChannelTypeEnum channelType, ChannelBizTypeEnum channelBizType, Integer channelDataId) {
+    public List<UserVariableBo> extractVariable(Integer userDataId, ChannelType channelType, ChannelBizType channelBizType, Integer channelDataId) {
         //获取用户信息
         UserData userData = userDataService.get(userDataId);
         //获取用户原始数据
@@ -134,6 +208,8 @@ public class UserDataNativeDomain implements UserDataDomain {
         if(userMetaDataList == null){
             userMetaDataList = new ArrayList<>();
         }
+        //原始数据按照最新时间倒叙排列
+        descSort(userMetaDataList);
         //遍历原始数据
         UserMetaData userMetaData = null;
         for (UserMetaData u1 : userMetaDataList) {
@@ -170,6 +246,21 @@ public class UserDataNativeDomain implements UserDataDomain {
         }
         userDataService.modify(userData);
         return data2Bo(resultBoList);
+    }
+
+    /**
+     * 原始数据倒叙排列
+     * @param userMetaDataList    原始数据集合
+     */
+    private void descSort(List<UserMetaData> userMetaDataList){
+        Collections.sort(userMetaDataList, new Comparator<UserMetaData>(){
+            @Override
+            public int compare(UserMetaData o1, UserMetaData o2) {
+                Date date2 = DateUtil.string2Date(o2.getCreateTime(), DateUtil.ymdhmsSSSFormat);
+                Date date1 = DateUtil.string2Date(o1.getCreateTime(), DateUtil.ymdhmsSSSFormat);
+                return date2.compareTo(date1);
+            }
+        });
     }
 
     private List<UserVariableBo> data2Bo(List<VariableDataBo> resultBoList){
@@ -210,7 +301,7 @@ public class UserDataNativeDomain implements UserDataDomain {
             }
         }
         //把用户数据信息下的所有变量集合放map中
-        Map<Integer, UserVariable> variableMap = new HashMap<>();
+        Map<Integer, UserVariable> variableMap = new HashMap<>(16);
         for (UserVariable userVariable : userVariableList) {
             variableMap.put(userVariable.getVariableDataId(), userVariable);
         }
@@ -243,6 +334,79 @@ public class UserDataNativeDomain implements UserDataDomain {
     }
 
     @Override
+    public PanCardDataBo fillPanCardInfo(Integer userDataId, String requestParams) {
+        //保存用户基本信息原始数据并返回ID
+        UserDataBo userDataBo = this.get(userDataId);
+        if(userDataBo == null){
+            throw new BusinessException("用户数据信息不存在");
+        }
+        PanCardDataBo panCardDataBo = panCardDomain.getPanInfo(userDataBo.getName(),userDataBo.getAadhaarNo(), userDataBo.getMobile(), userDataBo.getEmail(), userDataBo.getDeviceFingerprint(), requestParams);
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, panCardDataBo.getFid(), ChannelType.PANCARD.getValue(), ChannelBizType.PAN_CARD_VERIFY.getValue());
+        return panCardDataBo;
+    }
+
+    @Override
+    public PanCardDataBo fillPanCardInfoForOldData(Integer userDataId, String requestParams) {
+        //保存用户数据并返回ID
+        UserDataBo userDataBo = this.get(userDataId);
+        if(userDataBo == null){
+            throw new BusinessException("用户数据信息不存在");
+        }
+        PanCardDataBo panCardDataBo = panCardDomain.getPanInfoForOldData( userDataBo.getName(),userDataBo.getAadhaarNo(), userDataBo.getMobile(), userDataBo.getEmail(), userDataBo.getDeviceFingerprint(), requestParams);
+
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, panCardDataBo.getFid(), ChannelType.PANCARD.getValue(), ChannelBizType.PAN_CARD_VERIFY.getValue());
+        return panCardDataBo;
+    }
+
+    @Override
+    public String getEquifaxCreditReportMetaData(String requestParam) {
+        return equifaxCreditReportDomain.sendRequest(requestParam);
+    }
+
+    /**
+     * 用户报告
+     *
+     * @param userDataId 用户数据ID
+     * @return  原始数据ID
+     */
+    @Override
+    public Integer fillEquifaxCreditReportInfo(Integer userDataId, String uuid, String params, String metaData) {
+        UserDataBo userDataBo = this.get(userDataId);
+        if(userDataBo == null){
+            throw new BusinessException("用户数据信息不存在");
+        }
+        Integer dataId = equifaxCreditReportDomain.save(params, userDataBo.getName(), userDataBo.getAadhaarNo(), userDataBo.getMobile(), userDataBo.getEmail(), userDataBo.getDeviceFingerprint(), uuid, metaData);
+        if (dataId == null) {
+            return null;
+        }
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, dataId, ChannelType.EQUIFAXREPORT.getValue(), ChannelBizType.EQUIFAX_REPORT_ANALYZE.getValue());
+        return dataId;
+    }
+
+    /**
+     * 日志记录
+     *
+     * @param userDataId    用户数据ID
+     * @param params    请求参数
+     * @param metaData  原始数据
+     * @return  日志ID
+     */
+    @Override
+    public Integer saveEquifaxCreditReportLog(Integer userDataId, String status, String uuid, String params, String metaData) {
+        UserDataBo userDataBo = this.get(userDataId);
+        Integer dataId = equifaxCreditReportDomain.saveLog(userDataBo.getMobile(), userDataBo.getEmail(), status, uuid, params, metaData);
+        if (dataId == null) {
+            return null;
+        }
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, dataId, ChannelType.EQUIFAXREPORT.getValue(), ChannelBizType.EQUIFAX_REPORT_ANALYZE.getValue());
+        return dataId;
+    }
+
+    @Override
     public UserDataStatusBo innerCrossValidationPhone(Integer userDataId) {
         //获取用户信息
         UserData userData = userDataService.get(userDataId);
@@ -259,7 +423,7 @@ public class UserDataNativeDomain implements UserDataDomain {
         String curUserVariableCreatedTime = null;
         for (UserVariable userVariable : userVariableList) {
             if (VariableType.USER_CONTACTS_INFO.getValue().equalsIgnoreCase(userVariable.getVariableType()) &&
-                    ChannelBizTypeEnum.PS_CROSS_VALIDATION_PHONE.getValue().equals(userVariable.getUserVariableDataFrom().getChannelBizType())) {
+                    ChannelBizType.CROSS_VALIDATION_PHONE.getValue().equals(userVariable.getUserVariableDataFrom().getChannelBizType())) {
                 if(curUserVariableCreatedTime == null || curUserVariableCreatedTime.compareTo(userVariable.getCreateTime())<0) {
                     curUserVariable = userVariable;
                     curUserVariableCreatedTime = userVariable.getCreateTime();
@@ -293,8 +457,8 @@ public class UserDataNativeDomain implements UserDataDomain {
 //        }
         //TODO 保存原始数据
         Integer id = 1;
-        this.addMetaData(userDataId, new UserMetaDataBo(ChannelTypeEnum.CONSUMERLOANHISTORY, ChannelBizTypeEnum.CONSUMERLOANHISTORY_LOAN_RECORD, id,
-                DateUtil.dateToString(new Date(), DateUtil.ymdhmsSSSFormat)));
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, id, ChannelType.CONSUMERLOANHISTORY.getValue(), ChannelBizType.CONSUMERLOANHISTORY_LOAN_RECORD.getValue());
         return new UserDataStatusBo(UserDataStatusBo.DataStatus.SUCCESS, id);
     }
 
@@ -302,14 +466,16 @@ public class UserDataNativeDomain implements UserDataDomain {
     public Integer innerCrossValidationMaster(Integer userDataId) {
         //获取用户信息
         UserData userData = userDataService.get(userDataId);
-
+        if(userData == null){
+            throw new BusinessException("用户数据信息不存在");
+        }
         //TODO 保存原始数据
         Integer id = 1;//consumerLoanHistoryNaiveDomain.sendMasterInfoReq(userData.getName(), userData.getIdCard());
         if (id == null) {
             throw new BusinessException("交叉验证本人信息返回ID为空！");
         }
-        this.addMetaData(userDataId, new UserMetaDataBo(ChannelTypeEnum.CONSUMERLOANHISTORY,
-                ChannelBizTypeEnum.PS_CROSS_VALIDATION_MASTER, id, DateUtil.dateToString(new Date(), DateUtil.ymdhmsSSSFormat)));
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, id, ChannelType.CONSUMERLOANHISTORY.getValue(), ChannelBizType.CROSS_VALIDATION_MASTER.getValue());
         return id;
     }
 
@@ -330,7 +496,7 @@ public class UserDataNativeDomain implements UserDataDomain {
         String curUserVariableCreatedTime = null;
         for (UserVariable userVariable : userVariableList) {
             if (VariableType.USER_CONTACTS_INFO.getValue().equalsIgnoreCase(userVariable.getVariableType()) &&
-                    ChannelBizTypeEnum.PS_COMPLEX.getValue().equals(userVariable.getUserVariableDataFrom().getChannelBizType())) {
+                    ChannelBizType.APP_COMPLEX.getValue().equals(userVariable.getUserVariableDataFrom().getChannelBizType())) {
                 if(curUserVariableCreatedTime == null || curUserVariableCreatedTime.compareTo(userVariable.getCreateTime())<0) {
                     curUserVariable = userVariable;
                     curUserVariableCreatedTime = userVariable.getCreateTime();
@@ -363,8 +529,8 @@ public class UserDataNativeDomain implements UserDataDomain {
         if (id == null) {
             return null;
         }
-        this.addMetaData(userDataId, new UserMetaDataBo(ChannelTypeEnum.CONSUMERLOANHISTORY, ChannelBizTypeEnum.PS_CROSS_VALIDATION_CONTACT, id,
-                DateUtil.dateToString(new Date(), DateUtil.ymdhmsSSSFormat)));
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, id, ChannelType.CONSUMERLOANHISTORY.getValue(), ChannelBizType.CROSS_VALIDATION_CONTACT.getValue());
         return new UserDataStatusBo(UserDataStatusBo.DataStatus.SUCCESS, id);
     }
 
@@ -385,7 +551,7 @@ public class UserDataNativeDomain implements UserDataDomain {
         String curUserVariableCreatedTime = null;
         for (UserVariable userVariable : userVariableList) {
             if (VariableType.USER_FASTTOUCH.getValue().equalsIgnoreCase(userVariable.getVariableType()) &&
-                    ChannelBizTypeEnum.PS_CROSS_VALIDATION_EMERGENCY1.getValue().equals(userVariable.getUserVariableDataFrom().getChannelBizType())) {
+                    ChannelBizType.CROSS_VALIDATION_EMERGENCYS.getValue().equals(userVariable.getUserVariableDataFrom().getChannelBizType())) {
                 if(curUserVariableCreatedTime == null || curUserVariableCreatedTime.compareTo(userVariable.getCreateTime())<0) {
                     curUserVariable = userVariable;
                     curUserVariableCreatedTime = userVariable.getCreateTime();
@@ -417,9 +583,8 @@ public class UserDataNativeDomain implements UserDataDomain {
         if (id == null) {
             return null;
         }
-        this.addMetaData(userDataId, new UserMetaDataBo(ChannelTypeEnum.CONSUMERLOANHISTORY, ChannelBizTypeEnum.PS_CROSS_VALIDATION_EMERGENCY1, id,
-                DateUtil.dateToString(new Date(), DateUtil.ymdhmsSSSFormat)));
-
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, id, ChannelType.CONSUMERLOANHISTORY.getValue(), ChannelBizType.CROSS_VALIDATION_EMERGENCYS.getValue());
         return new UserDataStatusBo(UserDataStatusBo.DataStatus.SUCCESS, null);
     }
 
@@ -437,14 +602,14 @@ public class UserDataNativeDomain implements UserDataDomain {
 //        if (bankPortraitId == null) {
 //            throw new BusinessException("获取银联画像信息ID为空");
 //        }
-//        userDataService.addChannelData(userDataId, bankPortraitId, ChannelTypeEnum.PSAPP.getValue(), ChannelBizTypeEnum.BT_BANK_PORTRAIT.getValue());
+//        userDataService.addChannelData(userDataId, bankPortraitId, ChannelType.PSAPP.getValue(), ChannelBizType.BT_BANK_PORTRAIT.getValue());
 //        return bankPortraitId;
         return null;
     }
 
     @Override
     public List<Integer> findAddressCrossValidationVariableId(Integer userDataId) {
-        UserDataBo userDataBo = get(userDataId);
+        UserDataBo userDataBo = this.get(userDataId);
         if(userDataBo == null){
             throw new BusinessException("用户数据信息不存在");
         }
@@ -459,13 +624,13 @@ public class UserDataNativeDomain implements UserDataDomain {
         //取这些变量集合最新的数据
         List<Integer> variableIdList = new ArrayList<>();
         for (UserVariableBo userVariableBo : userVariableList) {
-            if(userVariableBo.getVariableType().getValue().equalsIgnoreCase("USER_BASICINFO")){
+            if("USER_BASICINFO".equalsIgnoreCase(userVariableBo.getVariableType().getValue())){
                 variableIdList.add(userVariableBo.getVariableDataId());
                 break;
             }
         }
         for (UserVariableBo userVariableBo : userVariableList) {
-            if(userVariableBo.getVariableType().getValue().equalsIgnoreCase("USER_CONTACTS_INFO")){
+            if("USER_CONTACTS_INFO".equalsIgnoreCase(userVariableBo.getVariableType().getValue())){
                 variableIdList.add(userVariableBo.getVariableDataId());
                 break;
             }
@@ -490,7 +655,7 @@ public class UserDataNativeDomain implements UserDataDomain {
         String curUserVariableCreatedTime = null;
         for (UserVariable userVariable : userVariableList) {
             if (VariableType.USER_CONTACTS_INFO.getValue().equalsIgnoreCase(userVariable.getVariableType()) &&
-                    ChannelBizTypeEnum.PS_CROSS_VALIDATION_MASTER.getValue().equals(userVariable.getUserVariableDataFrom().getChannelBizType())) {
+                    ChannelBizType.CROSS_VALIDATION_MASTER.getValue().equals(userVariable.getUserVariableDataFrom().getChannelBizType())) {
                 if(curUserVariableCreatedTime == null || curUserVariableCreatedTime.compareTo(userVariable.getCreateTime())<0) {
                     curUserVariable = userVariable;
                     curUserVariableCreatedTime = userVariable.getCreateTime();
@@ -501,6 +666,85 @@ public class UserDataNativeDomain implements UserDataDomain {
             return null;
         }
         return curUserVariable.getVariableDataId();
+    }
+
+    @Override
+    public String oloanLoanApply(Integer userDataId) {
+        UserDataBo userDataBo = this.get(userDataId);
+        if(userDataBo == null){
+            throw new BusinessException("用户数据信息不存在");
+        }
+        List<UserFeatureBo> userFeatureList = userDataBo.getUserFeatureList();
+        JSONObject jsonObject = new JSONObject();
+        if (userFeatureList != null && userFeatureList.size() > 0) {
+            List<Integer> featureDataidList = new ArrayList<>();
+            for (UserFeatureBo userFeatureBo : userFeatureList) {
+                featureDataidList.add(userFeatureBo.getFeatureDataId());
+            }
+            List<FeatureDataBo> featureDataBoListList = featureDomain.findFeatureList(featureDataidList);
+            //封装特征值结构
+            jsonObject = sealFeatureValues(featureDataBoListList);
+        }
+        LOGGER.info("申请贷款入参：" + jsonObject.toJSONString());
+        // 请求决策中心获取决策结果
+        ArcBorrowRuleResultBo borrowRuleResultBo = decisionDomain.getResultByRuleEngine(jsonObject);
+
+        return JSONObject.toJSONString(borrowRuleResultBo);
+    }
+
+    @Override
+    public Integer fillLoanApplyInfo(Integer userDataId, String originalData) {
+        UserDataBo userDataBo = this.get(userDataId);
+        if(userDataBo == null){
+            throw new BusinessException("用户数据信息不存在");
+        }
+        Integer id = loanHistoryDomain.addCunsumerLoanHistoryData(userDataBo.getName(), userDataBo.getAadhaarNo(), userDataBo.getMobile(), userDataBo.getEmail(), userDataBo.getDeviceFingerprint(), JSONObject.toJSONString(originalData));
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, id, ChannelType.CONSUMERLOANHISTORY.getValue(), ChannelBizType.CONSUMERLOANHISTORY_LOAN_RECORD.getValue());
+        return id;
+    }
+
+     @Override
+    public Integer fillSimInfo(Integer userDataId, String originalData) {
+        //保存用户基本信息原始数据并返回ID
+        UserDataBo userDataBo = this.get(userDataId);
+         if(userDataBo == null){
+             throw new BusinessException("用户数据信息不存在");
+         }
+        Integer id = moxieSIMDomain.addMoxieSIMData(userDataBo.getName(), userDataBo.getAadhaarNo(), userDataBo.getMobile(), userDataBo.getEmail(), userDataBo.getDeviceFingerprint(), originalData);
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, id, ChannelType.MOXIESIMCARD.getValue(), ChannelBizType.MOXIE_SIM_CARD_INFO.getValue());
+        return id;
+    }
+
+    @Override
+    public String getMoxieSNSInfoFromThirdParty(String requestParam) {
+        return moxieSNSDomain.sendRequest(requestParam);
+    }
+
+    @Override
+    public Integer fillSNSInfo(Integer userDataId, String originalData) {
+        //保存用户基本信息原始数据并返回ID
+        UserDataBo userDataBo = this.get(userDataId);
+        Integer id = moxieSNSDomain.addMoxieSNSData(userDataBo.getName(), userDataBo.getAadhaarNo(), userDataBo.getMobile(), userDataBo.getEmail(), userDataBo.getDeviceFingerprint(), originalData);
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, id, ChannelType.MOXIESNS.getValue(), ChannelBizType.MOXIE_SNS_INFO.getValue());
+        return id;
+    }
+
+    @Override
+    public Integer fillTDBodyGuardInfo(Integer userDataId, String originalData) {
+        //保存用户基本信息原始数据并返回ID
+        UserDataBo userDataBo = this.get(userDataId);
+        Integer id = tdBodyGuardDomain.addTDBodyGuardData(userDataBo.getName(), userDataBo.getAadhaarNo(), userDataBo.getMobile(), userDataBo.getEmail(), userDataBo.getDeviceFingerprint(), originalData);
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, id, ChannelType.TONGDUNCREDITBODYGUARD.getValue(), ChannelBizType.TONGDUN_CREDIT_BODYGUARD_INFO.getValue());
+        return id;
+    }
+
+    @Override
+    public String getTDBodyGuardInfoFromThirdParty(String requestParam) {
+        return tdBodyGuardDomain.sendRequest(requestParam);
     }
 
     /**
@@ -519,5 +763,34 @@ public class UserDataNativeDomain implements UserDataDomain {
         }
         userFeature.setUserFeatureDataFromList(variableList);
         return userFeature;
+    }
+
+    /**
+     * 封装特征集合
+     * @param featureDataBoListList 特征集合
+     */
+    private JSONObject sealFeatureValues(List<FeatureDataBo> featureDataBoListList) {
+        JSONObject result = new JSONObject();
+
+        for (FeatureDataBo featureDataBo : featureDataBoListList) {
+            List<FeatureDataValueBo> featureDataValueBoList = featureDataBo.getValueList();
+            for (FeatureDataValueBo featureDataValueBo : featureDataValueBoList) {
+                result.put(featureDataValueBo.getKey(), featureDataValueBo.getValue());
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Integer fillCallRecordInfo(Integer userDataId, String originalData) {
+        //保存用户基本信息原始数据并返回ID
+        UserDataBo userDataBo = this.get(userDataId);
+        if(userDataBo == null){
+            throw new BusinessException("用户数据信息不存在");
+        }
+        Integer id = appDataDomain.addAppCallRecordData(userDataBo.getName(), userDataBo.getAadhaarNo(), userDataBo.getMobile(), userDataBo.getEmail(), userDataBo.getDeviceFingerprint(), originalData);
+        //关联完整用户基本信息到用户信息中
+        userDataService.addChannelData(userDataId, id, ChannelType.PSAPP.getValue(), ChannelBizType.APP_CALLRECORDS.getValue());
+        return id;
     }
 }

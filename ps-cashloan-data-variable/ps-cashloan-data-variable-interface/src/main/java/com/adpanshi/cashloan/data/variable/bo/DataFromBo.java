@@ -2,8 +2,8 @@ package com.adpanshi.cashloan.data.variable.bo;
 
 
 import com.adpanshi.cashloan.common.utils.BeanUtil;
-import com.adpanshi.cashloan.data.common.enums.ChannelBizTypeEnum;
-import com.adpanshi.cashloan.data.common.enums.ChannelTypeEnum;
+import com.adpanshi.cashloan.data.common.enums.ChannelBizType;
+import com.adpanshi.cashloan.data.common.enums.ChannelType;
 
 import java.io.Serializable;
 
@@ -14,25 +14,25 @@ import java.io.Serializable;
 public class DataFromBo implements Serializable ,BeanUtil.ConversionCustomizble {
     private static final long serialVersionUID = 1L;
 
-    private ChannelTypeEnum channelTypeEnum;
-    private ChannelBizTypeEnum channelBizTypeEnum;
+    private ChannelType channelType;
+    private ChannelBizType channelBizType;
     private Integer channelDataId;
     private String createTime;
 
-    public ChannelTypeEnum getChannelTypeEnum() {
-        return channelTypeEnum;
+    public ChannelType getChannelType() {
+        return channelType;
     }
 
-    public void setChannelTypeEnum(ChannelTypeEnum channelTypeEnum) {
-        this.channelTypeEnum = channelTypeEnum;
+    public void setChannelType(ChannelType channelType) {
+        this.channelType = channelType;
     }
 
-    public ChannelBizTypeEnum getChannelBizTypeEnum() {
-        return channelBizTypeEnum;
+    public ChannelBizType getChannelBizType() {
+        return channelBizType;
     }
 
-    public void setChannelBizTypeEnum(ChannelBizTypeEnum channelBizTypeEnum) {
-        this.channelBizTypeEnum = channelBizTypeEnum;
+    public void setChannelBizType(ChannelBizType channelBizType) {
+        this.channelBizType = channelBizType;
     }
 
     public Integer getChannelDataId() {
@@ -53,13 +53,13 @@ public class DataFromBo implements Serializable ,BeanUtil.ConversionCustomizble 
 
     @Override
     public void convertOthers(Object o) {
-        Object channelType = BeanUtil.getPropValue(o, "channelTypeEnum");
+        Object channelType = BeanUtil.getPropValue(o, "channelType");
         if (channelType != null && channelType instanceof Integer) {
-            this.setChannelTypeEnum(ChannelTypeEnum.getByValue((Integer) channelType));
+            this.setChannelType(ChannelType.getByValue((Integer) channelType));
         }
-        Object channelBizType = BeanUtil.getPropValue(o, "channelBizTypeEnum");
+        Object channelBizType = BeanUtil.getPropValue(o, "channelBizType");
         if (channelBizType != null && channelBizType instanceof Integer) {
-            this.setChannelBizTypeEnum(ChannelBizTypeEnum.getByValue((Integer) channelBizType));
+            this.setChannelBizType(ChannelBizType.getByValue((Integer) channelBizType));
         }
     }
 }

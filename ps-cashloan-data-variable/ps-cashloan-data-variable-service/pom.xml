@@ -15,17 +15,32 @@
     <dependencies>
         <dependency>
             <groupId>com.adpanshi</groupId>
-            <artifactId>ps-cashloan-data-appdata-interface</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.adpanshi</groupId>
             <artifactId>ps-cashloan-data-variable-interface</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-appdata-interface</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
             <artifactId>ps-cashloan-data-idgenerator</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-thirdparty-moxie-interface</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-thirdparty-equifax-interface</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-thirdparty-tdbody-interface</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>

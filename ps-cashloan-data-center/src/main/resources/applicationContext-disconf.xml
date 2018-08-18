@@ -15,11 +15,10 @@
     <bean id="disconfigProperties" class="com.baidu.disconf.client.addons.properties.ReloadablePropertiesFactoryBean">
         <property name="locations">
             <list>
-                <value>classpath*:/mongo.properties</value>
-                <value>classpath*:/thread-pool.properties</value>
                 <value>classpath*:/dubbo-runtime.properties</value>
-                <value>classpath*:/jdbc.properties</value>
-                <value>classpath*:/db-pool.properties</value>
+                <value>classpath*:/mongo.properties</value>
+                <value>classpath*:/pancard.properties</value>
+                <value>classpath*:/equifax.properties</value>
             </list>
         </property>
     </bean>

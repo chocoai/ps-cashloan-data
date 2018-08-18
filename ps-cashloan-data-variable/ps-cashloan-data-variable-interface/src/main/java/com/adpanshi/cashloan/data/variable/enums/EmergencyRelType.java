@@ -7,6 +7,9 @@ import com.adpanshi.cashloan.common.enums.ContentEnum;
  */
 public enum EmergencyRelType implements ContentEnum {
 
+    /**
+     * 紧急联系人
+     */
     PARENT("父母",1),
     CHILDREN("子女",2),
     BROTHERS_AND_SISTERS("兄弟姐妹",3),
@@ -18,6 +21,7 @@ public enum EmergencyRelType implements ContentEnum {
     private String content;
     private Integer value;
 
+    @Override
     public boolean equalsValue(Integer value)
     {
         return (value != null) && (value.equals(getValue()));
@@ -37,10 +41,12 @@ public enum EmergencyRelType implements ContentEnum {
         return null;
     }
 
+    @Override
     public String getContent() {
         return this.content;
     }
 
+    @Override
     public Integer getValue() {
         return this.value;
     }

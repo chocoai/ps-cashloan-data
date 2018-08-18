@@ -14,6 +14,7 @@ import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.List;
 @Service
 public class UserDataService {
 
-    @Autowired
+    @Resource
     private MongoUtil mongoUtil;
 
     /**
@@ -64,6 +65,41 @@ public class UserDataService {
         return userDataList.get(0);
     }
 
+    /**
+     * 添加一条原始数据
+     */
+    public void addChannelData(Integer userDataId, Integer channelDataId, Integer channelType, Integer channelBizType) {
+        this.addChannelData2UserData(userDataId, channelDataId, channelType, channelBizType, null);
+    }
+
+    /**
+     * 添加一条原始数据
+     */
+    public void addChannelData2UserData(Integer userDataId, Integer channelDataId, Integer channelType, Integer channelBizType, UserData userDataParam) {
+        UserData userData;
+        if(userDataParam == null){
+            //获取用户数据
+            userData = get(userDataId);
+
+        }else{
+            userData = userDataParam;
+        }
+        if (userData == null) {
+            throw new BusinessException("用户数据信息为空,查询参数：" + userDataId);
+        }
+        //获取用户原始数据
+        List<UserMetaData> userMetaDataList = userData.getUserMetaDataList();
+        if (userMetaDataList == null) {
+            userMetaDataList = new ArrayList<>();
+        }
+        UserMetaData userMetaData = new UserMetaData();
+        userMetaData.setChannelDataId(channelDataId);
+        userMetaData.setChannelType(channelType);
+        userMetaData.setChannelBizType(channelBizType);
+        userMetaData.setCreateTime(DateUtil.dateToString(new Date(), DateUtil.ymdhmsSSSFormat));
+        userMetaDataList.add(userMetaData);
+        this.modify(userData);
+    }
 
     /**
      * 更新一条数据

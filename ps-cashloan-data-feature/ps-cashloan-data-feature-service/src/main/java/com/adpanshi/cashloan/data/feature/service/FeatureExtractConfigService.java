@@ -31,11 +31,11 @@ public class FeatureExtractConfigService {
      */
     public FeatureExtractConfig getByFeatureType(FeatureType featureType) {
         Bson bson = Filters.and(new Bson[]{Filters.eq("featureType", featureType.getValue())});
-        List<FeatureExtractConfig> FeatureExtractConfig = mongoUtil.find(CollectionName.FEATURE_EXTRACT_CONFIG, bson, FeatureExtractConfig.class);
-        if (FeatureExtractConfig.size() > 1){
+        List<FeatureExtractConfig> featureExtractConfigs = mongoUtil.find(CollectionName.FEATURE_EXTRACT_CONFIG, bson, FeatureExtractConfig.class);
+        if (featureExtractConfigs.size() > 1){
             logger.error("根据特征类别featureType:" + featureType + ", 查询到多条数据,数据异常");
             throw new FeatureException("根据特征类别featureType:" + featureType + ", 查询到多条数据,数据异常");
         }
-        return FeatureExtractConfig.isEmpty() ? null : FeatureExtractConfig.get(0);
+        return featureExtractConfigs.isEmpty() ? null : featureExtractConfigs.get(0);
     }
 }

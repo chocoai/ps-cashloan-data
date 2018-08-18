@@ -11,8 +11,10 @@
     <!-- Dubbo配置 -->
     <dubbo:application name="ps-cashloan-data-schedule" logger="${dubbo.application.logger}"/>
     <!-- 通过 广播通知所有人-->
-    <dubbo:registry id="cashloan-data-schedule" address="${cashloan.data.registry.address}" protocol="${cashloan.data.registry.protocol}"/>
+    <dubbo:registry id="cashloan-data-schedule" address="${cashloan.registry.address}" protocol="${cashloan.registry.protocol}"/>
+    <dubbo:protocol name="${protocol.name}" port="${protocol.port}" threads="500" payload="${protocol.payload}"/>
+    <dubbo:provider filter="-exception" payload="${provider.payload}"/>
 
-    <dubbo:reference id="bankPortraitDomain" interface="com.btjf.cashloan.data.thirdpart.bt.domain.BankPortraitDomain" version="1.0.0" check="false"/>
+    <!--<dubbo:reference id="bankPortraitDomain" interface="com.btjf.cashloan.data.thirdpart.bt.domain.BankPortraitDomain" version="1.0.0" check="false"/>-->
 
 </beans>

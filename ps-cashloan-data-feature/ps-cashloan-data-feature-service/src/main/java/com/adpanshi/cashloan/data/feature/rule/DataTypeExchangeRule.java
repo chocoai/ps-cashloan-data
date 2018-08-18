@@ -19,10 +19,10 @@ public class DataTypeExchangeRule {
         Integer result= 0;
 
         if(value!=null) {
-            if(value.equals("男")){
+            if("男".equals(value)){
                 result=1;
             }
-            else if(value.equals("女")){
+            else if("女".equals(value)){
                 result=2;
             }else {
                 result = Integer.parseInt(value);

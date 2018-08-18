@@ -11,13 +11,19 @@
     <!-- Dubbo配置 -->
     <dubbo:application name="ps-cashloan-data-center" logger="${dubbo.application.logger}"/>
     <!-- 通过 广播通知所有人-->
-    <dubbo:registry id="cashloan-data" address="${cashloan.data.registry.address}" protocol="${cashloan.data.registry.protocol}"/>
-    <dubbo:protocol name="${protocol.name}" port="${protocol.port}" threads="500"/>
-    <dubbo:provider filter="-exception"/>
+    <dubbo:registry id="cashloan" address="${cashloan.registry.address}" protocol="${cashloan.registry.protocol}"/>
+    <dubbo:protocol name="${protocol.name}" port="${protocol.port}" threads="500" payload="${protocol.payload}"/>
+    <dubbo:provider filter="-exception" payload="${provider.payload}"/>
 
-    <!--<dubbo:service interface="com.adpanshi.cashloan.data.thirdparty.aadhaar.domain.AadhaarRemoteDomain" version="1.0.0" ref="aadhaarDomain" validation="false" timeout="50000" retries="0" registry="cashloan-data"/>-->
-    <dubbo:service interface="com.adpanshi.cashloan.data.appdata.domain.AppDataDomain" version="1.0.0" ref="appDataNativeDomain" validation="false" timeout="50000" retries="0" registry="cashloan-data"/>
-    <dubbo:service interface="com.adpanshi.cashloan.data.user.domain.UserDataDomain" version="1.0.0" ref="userDataDomain" validation="false" timeout="50000" retries="0" registry="cashloan-data"/>
-    <dubbo:service interface="com.adpanshi.cashloan.data.variable.domain.VariableDomain" version="1.0.0" ref="variableDomain" validation="false" timeout="50000" retries="0" registry="cashloan-data"/>
-    <dubbo:service interface="com.adpanshi.cashloan.data.feature.domain.FeatureDomain" version="1.0.0" ref="featureDomain" validation="false" timeout="50000" retries="0" registry="cashloan-data"/>
+    <dubbo:service interface="com.adpanshi.cashloan.data.appdata.domain.AppDataDomain" version="1.0.0" ref="appDataDomain" validation="false" timeout="50000" retries="0" registry="cashloan"/>
+    <dubbo:service interface="com.adpanshi.cashloan.data.user.domain.UserDataDomain" version="1.0.0" ref="userDataDomain" validation="false" timeout="50000" retries="0" registry="cashloan"/>
+    <dubbo:service interface="com.adpanshi.cashloan.data.variable.domain.VariableDomain" version="1.0.0" ref="variableDomain" validation="false" timeout="50000" retries="0" registry="cashloan"/>
+    <dubbo:service interface="com.adpanshi.cashloan.data.feature.domain.FeatureDomain" version="1.0.0" ref="featureDomain" validation="false" timeout="50000" retries="0" registry="cashloan"/>
+    <dubbo:service interface="com.adpanshi.cashloan.data.thirdparty.pancard.domain.PanCardDomain" version="1.0.0" ref="panCardDomain" validation="false" timeout="50000" retries="0" registry="cashloan"/>
+    <dubbo:service interface="com.adpanshi.cashloan.data.thirdparty.equifax.domain.EquifaxCreditReportDomain" version="1.0.0" ref="equifaxCreditReportDomain" validation="false" timeout="50000" retries="0" registry="cashloan"/>
+    <dubbo:service interface="com.adpanshi.cashloan.data.cunsumerloanhistory.domain.LoanHistoryDomain" version="1.0.0" ref="loanHistoryDomain" validation="false" timeout="50000" retries="0" registry="cashloan"/>
+    <dubbo:service interface="com.adpanshi.cashloan.data.thirdparty.moxie.domain.MoxieSIMDomain" version="1.0.0" ref="moxieSIMDomain" validation="false" timeout="50000" retries="0" registry="cashloan"/>
+    <dubbo:service interface="com.adpanshi.cashloan.data.thirdparty.moxie.domain.MoxieSNSDomain" version="1.0.0" ref="moxieSNSDomain" validation="false" timeout="50000" retries="0" registry="cashloan"/>
+
+    <dubbo:reference id="decisionDomain" interface="com.adpanshi.cashloan.decision.domain.DecisionDomain" version="1.0.0" check="false" registry="cashloan"/>
 </beans>

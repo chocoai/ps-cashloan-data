@@ -13,12 +13,15 @@
 
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream -->
         <dependency>
-            <groupId>com.thoughtworks.xstream</groupId>
-            <artifactId>xstream</artifactId>
-            <version>1.4.10</version>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-thirdparty-equifax-service</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.9.10</version>
+        </dependency>
     </dependencies>
 </project>

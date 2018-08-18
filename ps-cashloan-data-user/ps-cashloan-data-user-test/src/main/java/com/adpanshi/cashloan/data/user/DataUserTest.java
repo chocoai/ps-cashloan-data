@@ -1,20 +1,14 @@
 package com.adpanshi.cashloan.data.user;
 
 import com.adpanshi.cashloan.common.enums.OrganizationEnum;
-import com.adpanshi.cashloan.common.utils.DateUtil;
-import com.adpanshi.cashloan.data.common.enums.ChannelBizTypeEnum;
-import com.adpanshi.cashloan.data.common.enums.ChannelTypeEnum;
-import com.adpanshi.cashloan.data.feature.enums.FeatureType;
+import com.adpanshi.cashloan.data.common.enums.ChannelBizType;
+import com.adpanshi.cashloan.data.common.enums.ChannelType;
 import com.adpanshi.cashloan.data.user.bo.*;
 import com.adpanshi.cashloan.data.user.domain.UserDataDomain;
 import com.adpanshi.cashloan.data.variable.enums.VariableType;
 import com.alibaba.fastjson.JSONObject;
 import org.testng.annotations.Test;
 import tool.util.StringUtil;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by zsw on 2018/6/29 0029.
@@ -24,16 +18,16 @@ public class DataUserTest {
     private UserDataDomain remote = RemoteFactory.getRemote(UserDataDomain.class, "1.0.0");
 
 
-    private static final String mobile = "15267011679";
-    private static final String aadhaarNo = "1234567890";
-    private static final String email = "zhoushanwen8502@adpanshi.com";
-    private static final String deviceFingerprint = "qwertyuiop";
-    private static final Integer userDataId = 2;
-    private static final String account = "15267011679";
-    private static final String name = "周善文";
-    private static final Integer channelDataId = 3;
-    private static final ChannelTypeEnum CHANNEL_TYPE_ENUM = ChannelTypeEnum.AADHAAR;
-    private static final ChannelBizTypeEnum CHANNEL_BIZ_TYPE_ENUM = ChannelBizTypeEnum.APP_USER_BASE_INFO;
+    private static final String MOBILE = "15267011679";
+    private static final String AADHAAR_NO = "1234567890";
+    private static final String EMAIL = "zhoushanwen8502@adpanshi.com";
+    private static final String DEVICE_FINGERPRINT = "qwertyuiop";
+    private static final Integer USER_DATA_ID = 6;
+    private static final String ACCOUNT = "15267011679";
+    private static final String NAME = "周善文";
+    private static final Integer CHANNEL_DATA_ID = 3;
+    private static final ChannelType CHANNEL_TYPE_ENUM = ChannelType.AADHAAR;
+    private static final ChannelBizType CHANNEL_BIZ_TYPE_ENUM = ChannelBizType.APP_USER_BASE_INFO;
     /**
      * 创建用户数据
      */
@@ -52,7 +46,7 @@ public class DataUserTest {
      */
     @Test
     public void get() {
-        UserDataBo userDataBo = remote.get(userDataId);
+        UserDataBo userDataBo = remote.get(USER_DATA_ID);
         String userDataBoStr = JSONObject.toJSONString(userDataBo);
         System.err.println(userDataBoStr);
     }
@@ -63,23 +57,15 @@ public class DataUserTest {
     @Test
     public void modify() {
         UserBaseDataBo userBaseDataBo = getUserBaseDataBoInstance();
-        remote.modify(userDataId, userBaseDataBo);
+        remote.modify(USER_DATA_ID, userBaseDataBo);
 
     }
 
-    /**
-     * 新增用户原始数据
-     */
     @Test
-    public void addMetaData() {
-        UserMetaDataBo userMetaDataBo = new UserMetaDataBo();
-        userMetaDataBo.setChannelType(CHANNEL_TYPE_ENUM);
-        userMetaDataBo.setChannelBizType(CHANNEL_BIZ_TYPE_ENUM);
-        userMetaDataBo.setChannelDataId(channelDataId);
-        userMetaDataBo.setCreateTime(DateUtil.dateToString(new Date(), DateUtil.ymdhmsSSSFormat));
-        remote.addMetaData(userDataId, userMetaDataBo);
+    public void oloanLoanApply() {
+        String loanApplyResult = remote.oloanLoanApply(USER_DATA_ID);
+        System.err.println(loanApplyResult);
     }
-
     private UserVariableBo getUserVariableBoInstance() {
         UserVariableBo userVariableBo = new UserVariableBo();
         userVariableBo.setCreateTime("2018-07-15 22:02:24 112");
@@ -89,8 +75,8 @@ public class DataUserTest {
 
         UserMetaDataBo userMetaDataBo = new UserMetaDataBo();
         userMetaDataBo.setChannelDataId(2);
-        userMetaDataBo.setChannelBizType(ChannelBizTypeEnum.APP_USER_BASE_INFO);
-        userMetaDataBo.setChannelType(ChannelTypeEnum.AADHAAR);
+        userMetaDataBo.setChannelBizType(ChannelBizType.APP_USER_BASE_INFO);
+        userMetaDataBo.setChannelType(ChannelType.AADHAAR);
         userMetaDataBo.setCreateTime("2018-07-15 22:02:24 112");
 
         userVariableBo.setUserVariableDataFrom(userMetaDataBo);
@@ -98,13 +84,13 @@ public class DataUserTest {
     }
     private UserBaseDataBo getUserBaseDataBoInstance() {
         UserBaseDataBo userBaseDataBo = new UserBaseDataBo();
-        userBaseDataBo.setAadhaarNo(aadhaarNo);
+        userBaseDataBo.setAadhaarNo(AADHAAR_NO);
         userBaseDataBo.setCountryType(OrganizationEnum.CountryType.INDIA);
         userBaseDataBo.setProductType(OrganizationEnum.ProductType.OLOAN);
-        userBaseDataBo.setDeviceFingerprint(deviceFingerprint);
-        userBaseDataBo.setEmail(email);
-        userBaseDataBo.setMobile(mobile);
-        userBaseDataBo.setName(name);
+        userBaseDataBo.setDeviceFingerprint(DEVICE_FINGERPRINT);
+        userBaseDataBo.setEmail(EMAIL);
+        userBaseDataBo.setMobile(MOBILE);
+        userBaseDataBo.setName(NAME);
         return userBaseDataBo;
     }
 }

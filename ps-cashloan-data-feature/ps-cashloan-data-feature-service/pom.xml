@@ -24,11 +24,6 @@
         </dependency>
         <dependency>
             <groupId>com.adpanshi</groupId>
-            <artifactId>ps-cashloan-data-variable-service</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.adpanshi</groupId>
             <artifactId>ps-cashloan-data-idgenerator</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

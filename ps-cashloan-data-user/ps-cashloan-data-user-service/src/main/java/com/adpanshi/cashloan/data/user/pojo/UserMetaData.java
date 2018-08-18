@@ -1,8 +1,8 @@
 package com.adpanshi.cashloan.data.user.pojo;
 
 import com.adpanshi.cashloan.common.utils.BeanUtil;
-import com.adpanshi.cashloan.data.common.enums.ChannelBizTypeEnum;
-import com.adpanshi.cashloan.data.common.enums.ChannelTypeEnum;
+import com.adpanshi.cashloan.data.common.enums.ChannelBizType;
+import com.adpanshi.cashloan.data.common.enums.ChannelType;
 
 /**
  * 用户元数据
@@ -51,13 +51,13 @@ public class UserMetaData implements java.io.Serializable, BeanUtil.ConversionCu
     @Override
     public void convertOthers(Object o) {
         Object channelType = BeanUtil.getPropValue(o, "channelType");
-        if (channelType != null && channelType instanceof ChannelTypeEnum) {
-            this.setChannelType(((ChannelTypeEnum) channelType).getValue());
+        if (channelType != null && channelType instanceof ChannelType) {
+            this.setChannelType(((ChannelType) channelType).getValue());
         }
 
         Object channelBizType = BeanUtil.getPropValue(o, "channelBizType");
-        if (channelBizType != null && channelBizType instanceof ChannelBizTypeEnum) {
-            this.setChannelBizType(((ChannelBizTypeEnum) channelBizType).getValue());
+        if (channelBizType != null && channelBizType instanceof ChannelBizType) {
+            this.setChannelBizType(((ChannelBizType) channelBizType).getValue());
         }
     }
 }

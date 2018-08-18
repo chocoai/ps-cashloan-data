@@ -15,17 +15,50 @@ import java.util.List;
 public class FeatureDataBo implements Serializable ,BeanUtil.ConversionCustomizble{
     private static final long serialVersionUID = 1L;
 
-    private Integer fid;//主键
-    private String aadhaarNo;//aadhaarNo编号
-    private String mobile;//手机号
-    private String email;//邮箱
-    private String name;//姓名
-    private String equipmentFingerpints;//设备指纹
-    private FeatureType featureType;//特征类型
-    private String featureExtractVersion;//特征抽取版本
-    private String createdTime;//创建时间
-    private List<FeatureDataValueBo> valueList;//结果集
-    private List<DataFromBo> dataFromList;//数据来源集
+    /**
+     * 主键
+     */
+    private Integer fid;
+    /**
+     *aadhaarNo编号
+     */
+    private String aadhaarNo;
+    /**
+     *手机号
+     */
+    private String mobile;
+    /**
+     *邮箱
+     */
+    private String email;
+    /**
+     *姓名
+     */
+    private String name;
+    /**
+     *设备指纹
+     */
+    private String equipmentFingerpints;
+    /**
+     *特征类型
+     */
+    private FeatureType featureType;
+    /**
+     *特征抽取版本
+     */
+    private String featureExtractVersion;
+    /**
+     *创建时间
+     */
+    private String createdTime;
+    /**
+     *结果集
+     */
+    private List<FeatureDataValueBo> valueList;
+    /**
+     *数据来源集
+     */
+    private List<DataFromBo> dataFromList;
 
     public FeatureDataBo(){
         valueList = new ArrayList<FeatureDataValueBo>();

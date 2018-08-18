@@ -13,11 +13,26 @@ import java.io.Serializable;
 public class DataFromBo implements Serializable ,BeanUtil.ConversionCustomizble{
     private static final long serialVersionUID = 1L;
 
-    private Integer variableDataId;            //变量ID
-    private VariableType variableType;        //变量类型
-    private String variableExtractVersion;    //变量抽取版本
-    private String createTime;                //变量创建时间
-    private String channelDataCreateTime;     //渠道数据创建时间
+    /**
+     * 变量ID
+     */
+    private Integer variableDataId;
+    /**
+     *变量类型
+     */
+    private VariableType variableType;
+    /**
+     *变量抽取版本
+     */
+    private String variableExtractVersion;
+    /**
+     *变量创建时间
+     */
+    private String createTime;
+    /**
+     *渠道数据创建时间
+     */
+    private String channelDataCreateTime;
 
     public VariableType getVariableType() {
         return variableType;

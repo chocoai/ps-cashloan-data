@@ -1,8 +1,8 @@
 package com.adpanshi.cashloan.data.variable;
 
 
-import com.adpanshi.cashloan.data.common.enums.ChannelBizTypeEnum;
-import com.adpanshi.cashloan.data.common.enums.ChannelTypeEnum;
+import com.adpanshi.cashloan.data.common.enums.ChannelBizType;
+import com.adpanshi.cashloan.data.common.enums.ChannelType;
 import com.adpanshi.cashloan.data.variable.bo.VariableDataBo;
 import com.adpanshi.cashloan.data.variable.domain.VariableDomain;
 import com.alibaba.fastjson.JSONObject;
@@ -18,22 +18,24 @@ public class VariableTest {
 
     private VariableDomain remote = RemoteFactory.getRemote(VariableDomain.class, "1.0.0");
 
-    private static final ChannelTypeEnum CHANNEL_TYPE_ENUM = ChannelTypeEnum.AADHAAR;
-    private static final ChannelBizTypeEnum CHANNEL_BIZ_TYPE_ENUM = ChannelBizTypeEnum.APP_USER_BASE_INFO;
-    private static final Integer channelDataId = 2;
-    private static final String channelDataCreateTime = "2018-07-15 18:46:22 096";
-    private static final String account = "15267011679";
-    private static final String aadhaarNo = "1234567890";
-    private static final String deviceFingerprint = "qwertyuiop";
-    private static final String name = "周善文";
-    private static final Integer variableDataId = 3;
+    private static final ChannelType CHANNEL_TYPE = ChannelType.PSAPP;
+    private static final ChannelBizType CHANNEL_BIZ_TYPE = ChannelBizType.APP_USER_BASE_INFO;
+    private static final Integer CHANNEL_DATA_ID = 7;
+    private static final String CHANNEL_DATA_CREATE_TIME = "2018-07-15 18:46:22 096";
+    private static final String ACCOUNT = "15267011679";
+    private static final String AADHAAR_NO = "1234567890";
+    private static final String DEVICE_FINGERPRINT = "qwertyuiop";
+    private static final String NAME = "周善文";
+    private static final Integer VARIABLE_DATA_ID = 3;
+    private static final String MOBILE = "15267011679";
+    private static final String EMAIL = "1119439642@qq.com";
     /**
      * 抽取变量
      */
     @Test
     public void extractVariable() {
-        List<VariableDataBo> variableDataBoList = remote.extractVariable(CHANNEL_TYPE_ENUM, CHANNEL_BIZ_TYPE_ENUM, channelDataId,
-                channelDataCreateTime, account, aadhaarNo, name, deviceFingerprint);
+        List<VariableDataBo> variableDataBoList = remote.extractVariable(CHANNEL_TYPE, CHANNEL_BIZ_TYPE, CHANNEL_DATA_ID,
+                CHANNEL_DATA_CREATE_TIME, MOBILE, EMAIL, AADHAAR_NO, NAME, DEVICE_FINGERPRINT);
         System.err.println(JSONObject.toJSONString(variableDataBoList));
     }
 
@@ -42,7 +44,7 @@ public class VariableTest {
      */
     @Test
     public void getVariableFindById() {
-        VariableDataBo variableDataBo = remote.getVariableFindById(variableDataId);
+        VariableDataBo variableDataBo = remote.getVariableFindById(VARIABLE_DATA_ID);
         System.err.println(JSONObject.toJSONString(variableDataBo));
 
     }

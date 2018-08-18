@@ -13,8 +13,14 @@ public class DataFrom extends MongoBean implements BeanUtil.ConversionCustomizbl
     private Integer variableDataId;
     private String variableType;
     private String variableExtractVersion;
-    private String createTime;                //变量创建时间
-    private String channelDataCreateTime;     //渠道数据创建时间
+    /**
+     * 变量创建时间
+     */
+    private String createTime;
+    /**
+     * 渠道数据创建时间
+     */
+    private String channelDataCreateTime;
 
     public DataFrom(){}
 

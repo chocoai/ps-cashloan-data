@@ -34,7 +34,11 @@ public class UserDataStatusBo implements Serializable {
 
     public enum DataStatus implements ContentEnum {
 
-        SUCCESS("成功", 20), SKIP("跳过", 40);
+        /**
+         * 成功
+         */
+        SUCCESS("成功", 20),
+        SKIP("跳过", 40);
 
         private String content;
         private Integer value;
@@ -43,6 +47,7 @@ public class UserDataStatusBo implements Serializable {
             this.content = content;
             this.value = value;
         }
+        @Override
         public boolean equalsValue(Integer value) {
             return (value != null) && (value.equals(getValue()));
         }
@@ -57,10 +62,12 @@ public class UserDataStatusBo implements Serializable {
             return null;
         }
 
+        @Override
         public String getContent() {
             return this.content;
         }
 
+        @Override
         public Integer getValue() {
             return this.value;
         }

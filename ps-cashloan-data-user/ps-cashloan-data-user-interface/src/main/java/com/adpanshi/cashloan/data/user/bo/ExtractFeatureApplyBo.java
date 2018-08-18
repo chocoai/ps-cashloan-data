@@ -12,8 +12,14 @@ import java.util.List;
 public class ExtractFeatureApplyBo implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
-    private FeatureType featureType;    //特征类型
-    private List<Integer> userVariableIdList;//用到的变量ID
+    /**
+     * 特征类型
+     */
+    private FeatureType featureType;
+    /**
+     *用到的变量ID
+     */
+    private List<Integer> userVariableIdList;
 
     public FeatureType getFeatureType() {
         return featureType;

@@ -11,9 +11,18 @@ import java.util.List;
 public class FeatureExtractConfig extends MongoBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String featureType;//特征类型
-    private List<String> variableTypeList;//变量类型
-    private String featureExtractVersion;//特征抽取版本
+    /**
+     * 特征类型
+     */
+    private String featureType;
+    /**
+     *变量类型
+     */
+    private List<String> variableTypeList;
+    /**
+     *特征抽取版本
+     */
+    private String featureExtractVersion;
 
     public String getFeatureType() {
         return featureType;

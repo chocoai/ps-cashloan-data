@@ -15,8 +15,9 @@ public class CheckUtil {
     private static Logger LOGGER = null;
 
     public static void checkStatus(boolean status, String message) throws BusinessException {
-        if (status)
+        if (status) {
             throw new BusinessException(message);
+        }
     }
 
     public static void checkNotNull(Object o) throws BusinessException {
@@ -32,8 +33,9 @@ public class CheckUtil {
     }
 
     public static void checkParam(boolean status, String message) throws BusinessException {
-        if (status)
+        if (status) {
             throw new ParamCheckErrorException(message);
+        }
     }
 
     public static <T> void checkListSize(List<T> list, String message) throws BusinessException {
@@ -44,8 +46,9 @@ public class CheckUtil {
     }
 
     public static <T> Boolean checkListIsNullOrIsEmpty(List<T> list) {
-        if (null == list || 0 == list.size())
+        if (null == list || 0 == list.size()) {
             return Boolean.TRUE;
+        }
         return Boolean.FALSE;
     }
 
