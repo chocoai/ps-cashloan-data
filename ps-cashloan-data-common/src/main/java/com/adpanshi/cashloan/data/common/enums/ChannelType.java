@@ -14,7 +14,7 @@ public enum ChannelType implements ContentEnum {
      */
     AADHAAR("aadhaar", 1),
     PANCARD("panCard", 2),
-    EQUIFAXREPORT("equifaxReport", 3),
+    EQUIFAXREPORT("equifaxreport", 3),
     OPERATOR("operator", 4),
     CIBIL("cibil", 5),
     TONGDUNCREDITBODYGUARD("tongdunCreditBodyguard", 6),
@@ -22,6 +22,7 @@ public enum ChannelType implements ContentEnum {
     CONSUMERLOANHISTORY("consumerLoanHistory", 8),
     MOXIESIMCARD("moxieSIMCard", 9),
     MOXIESNS("moxieSNS", 10),
+
 ;
     private String content;
     private Integer value;

@@ -1,8 +1,14 @@
 package com.adpanshi.cashloan.data.user.domain;
 
 
+import com.adpanshi.cashloan.data.appdata.bo.AppApplicationDataBo;
+import com.adpanshi.cashloan.data.appdata.bo.AppCallRecordDataBo;
+import com.adpanshi.cashloan.data.appdata.bo.AppCommunicationDataBo;
 import com.adpanshi.cashloan.data.common.enums.ChannelBizType;
 import com.adpanshi.cashloan.data.common.enums.ChannelType;
+import com.adpanshi.cashloan.data.thirdparty.equifax.bo.EquifaxReportDataBo;
+import com.adpanshi.cashloan.data.thirdparty.moxie.bo.MoxieSIMBo;
+import com.adpanshi.cashloan.data.thirdparty.moxie.bo.MoxieSNSBo;
 import com.adpanshi.cashloan.data.thirdparty.pancard.bo.PanCardDataBo;
 import com.adpanshi.cashloan.data.user.bo.*;
 
@@ -45,12 +51,25 @@ public interface UserDataDomain {
     Integer fillCommunication(Integer userDataId, String originalData);
 
     /**
+     * 获取用户APP通讯录信息
+     * @param dataId    数据ID
+     * @return  实例对象
+     */
+    AppCommunicationDataBo getAppCommunicationData(Integer dataId);
+    /**
      * 填充app应用
      * @param userDataId
      * @param originalData
      * @return
      */
     Integer fillApplication(Integer userDataId, String originalData);
+
+    /**
+     * 获取用户APP应用信息
+     * @param dataId    数据ID
+     * @return  实例对象
+     */
+    AppApplicationDataBo getAppApplicationData(Integer dataId);
     /**
      * 填充app紧急联系人
      * @param userDataId
@@ -92,11 +111,19 @@ public interface UserDataDomain {
     PanCardDataBo fillPanCardInfoForOldData(Integer userDataId, String requestParams);
 
     /**
-     * 获取equifax信用报告原始数据
+     * 从第三方获取equifax信用报告原始数据
      * @param requestParam  请求参数
      * @return  原始数据
      */
-    String getEquifaxCreditReportMetaData(String requestParam);
+    String getEquifaxMetaDataFromThirdparty(String requestParam);
+
+    /**
+     * 从数据库获取Equifax信用报告原始数据
+     * @param dataId    数据ID
+     * @return  报告实例
+     */
+    EquifaxReportDataBo getEquifaxMetaDataFromDB(Integer dataId);
+
     /**
      * 用户报告
      * @param userDataId    用户数据ID
@@ -113,6 +140,20 @@ public interface UserDataDomain {
      * @return
      */
     Integer saveEquifaxCreditReportLog(Integer userDataId, String status, String uuid, String params, String metaData);
+
+    /**
+     * 获取魔蝎SIM卡原始数据
+     * @param dataId    数据ID
+     * @return  实例对象
+     */
+    MoxieSIMBo getMoxieSIMMetaData(Integer dataId);
+
+    /**
+     * 获取魔蝎用户SNS社交原始数据
+     * @param dataId    数据ID
+     * @return  实例对象
+     */
+    MoxieSNSBo getMoxieSNSMetaData(Integer dataId);
 
     /**
      * 内部交叉验证,手机号校验联系人
@@ -216,6 +257,13 @@ public interface UserDataDomain {
      * @return
      */
     Integer fillCallRecordInfo(Integer userDataId,String callRecordMetaData);
+
+    /**
+     * 获取用户APP通话记录信息
+     * @param dataId    原始数据ID
+     * @return  实例对象
+     */
+    AppCallRecordDataBo getAppCallRecordData(Integer dataId);
 
 }
 

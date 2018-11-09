@@ -4,6 +4,8 @@ import com.adpanshi.cashloan.common.utils.BeanUtil;
 import com.adpanshi.cashloan.common.utils.DateUtil;
 import com.adpanshi.cashloan.data.common.constant.CollectionName;
 import com.adpanshi.cashloan.data.common.enums.ChannelBizType;
+import com.adpanshi.cashloan.data.common.enums.ChannelBizType;
+import com.adpanshi.cashloan.data.common.enums.ChannelType;
 import com.adpanshi.cashloan.data.common.enums.ChannelType;
 import com.adpanshi.cashloan.data.variable.bo.VariableDataBo;
 

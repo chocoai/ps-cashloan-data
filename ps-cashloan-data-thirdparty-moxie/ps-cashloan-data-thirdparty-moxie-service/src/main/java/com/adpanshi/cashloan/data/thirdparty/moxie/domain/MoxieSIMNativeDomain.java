@@ -15,8 +15,8 @@ public class MoxieSIMNativeDomain implements MoxieSIMDomain {
     private MoxieSIMService moxieSIMService;
 
     @Override
-    public MoxieSIMBo getMoxieSIMData(Integer simDataId) {
-        return moxieSIMService.get(simDataId);
+    public MoxieSIMBo getMoxieSIMMetaData(Integer dataId) {
+        return moxieSIMService.get(dataId);
     }
 
     @Override

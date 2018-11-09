@@ -19,13 +19,13 @@ public class AppDataTest {
     @Test
     public void appDataTest(){
         String originalData="{ \"marriageState\":0, \"residentProvince\":\"浙江\", \"residentCity\": \"杭州\", \"residentAddress\": \"祥园路\", \"employer\": \"盘石\", \"emergencyContactName\": \"刘\", \"emergencyContactRel\": \"自己\", \"lastCity\": \"杭州\" }";
-        remote.addAppData("周善文","362529199008212513","zsw","djflwejlepo","",  originalData);
+        remote.addAppUserBaseInfoData("周善文","362529199008212513","zsw","djflwejlepo","",  originalData);
 
     }
 
     @Test
     public void getDataTest(){
-        AppDataBo appDataBo=remote.getAppData(1);
+        AppDataBo appDataBo=remote.getAppUserBaseInfoData(1);
         System.out.println(appDataBo.getAccount());
         System.out.println(appDataBo.getAadhaarNo());
         System.out.println(appDataBo.getName());

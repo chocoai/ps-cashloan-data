@@ -2,6 +2,9 @@ package com.adpanshi.cashloan.data.user.domain;
 
 import com.adpanshi.cashloan.common.utils.BeanUtil;
 import com.adpanshi.cashloan.common.utils.DateUtil;
+import com.adpanshi.cashloan.data.appdata.bo.AppApplicationDataBo;
+import com.adpanshi.cashloan.data.appdata.bo.AppCallRecordDataBo;
+import com.adpanshi.cashloan.data.appdata.bo.AppCommunicationDataBo;
 import com.adpanshi.cashloan.data.appdata.domain.AppDataDomain;
 import com.adpanshi.cashloan.data.common.enums.ChannelBizType;
 import com.adpanshi.cashloan.data.common.enums.ChannelType;
@@ -11,7 +14,10 @@ import com.adpanshi.cashloan.data.feature.bo.DataFromBo;
 import com.adpanshi.cashloan.data.feature.bo.FeatureDataBo;
 import com.adpanshi.cashloan.data.feature.bo.FeatureDataValueBo;
 import com.adpanshi.cashloan.data.feature.domain.FeatureDomain;
+import com.adpanshi.cashloan.data.thirdparty.equifax.bo.EquifaxReportDataBo;
 import com.adpanshi.cashloan.data.thirdparty.equifax.domain.EquifaxCreditReportDomain;
+import com.adpanshi.cashloan.data.thirdparty.moxie.bo.MoxieSIMBo;
+import com.adpanshi.cashloan.data.thirdparty.moxie.bo.MoxieSNSBo;
 import com.adpanshi.cashloan.data.thirdparty.moxie.domain.MoxieSIMDomain;
 import com.adpanshi.cashloan.data.thirdparty.moxie.domain.MoxieSNSDomain;
 import com.adpanshi.cashloan.data.thirdparty.pancard.bo.PanCardDataBo;
@@ -41,7 +47,7 @@ import java.util.*;
  * 用户数据接口实现
  * Created by zsw on 2018/6/29 0029.
  */
-@Service("userDataDomain")
+@Service
 public class UserDataNativeDomain implements UserDataDomain {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDataNativeDomain.class);
 
@@ -61,7 +67,7 @@ public class UserDataNativeDomain implements UserDataDomain {
     private PanCardDomain panCardDomain;
 
     @Resource
-    private DecisionDomain decisionDomain;
+    private DecisionDomain decisionRemoteDomain;
 
     @Resource
     private LoanHistoryDomain loanHistoryDomain;
@@ -156,6 +162,11 @@ public class UserDataNativeDomain implements UserDataDomain {
         return id;
     }
 
+    @Override
+    public AppCommunicationDataBo getAppCommunicationData(Integer dataId) {
+        return appDataDomain.getAppCommunicationData(dataId);
+    }
+
     /**
      * 填充app应用
      *
@@ -174,6 +185,11 @@ public class UserDataNativeDomain implements UserDataDomain {
         //关联完整用户基本信息到用户信息中
         userDataService.addChannelData(userDataId, id, ChannelType.PSAPP.getValue(), ChannelBizType.APP_APPLICATION.getValue());
         return id;
+    }
+
+    @Override
+    public AppApplicationDataBo getAppApplicationData(Integer dataId) {
+        return appDataDomain.getAppApplicationData(dataId);
     }
 
     /**
@@ -361,8 +377,13 @@ public class UserDataNativeDomain implements UserDataDomain {
     }
 
     @Override
-    public String getEquifaxCreditReportMetaData(String requestParam) {
+    public String getEquifaxMetaDataFromThirdparty(String requestParam) {
         return equifaxCreditReportDomain.sendRequest(requestParam);
+    }
+
+    @Override
+    public EquifaxReportDataBo getEquifaxMetaDataFromDB(Integer dataId) {
+        return equifaxCreditReportDomain.getMetaData(dataId);
     }
 
     /**
@@ -404,6 +425,16 @@ public class UserDataNativeDomain implements UserDataDomain {
         //关联完整用户基本信息到用户信息中
         userDataService.addChannelData(userDataId, dataId, ChannelType.EQUIFAXREPORT.getValue(), ChannelBizType.EQUIFAX_REPORT_ANALYZE.getValue());
         return dataId;
+    }
+
+    @Override
+    public MoxieSIMBo getMoxieSIMMetaData(Integer dataId) {
+        return moxieSIMDomain.getMoxieSIMMetaData(dataId);
+    }
+
+    @Override
+    public MoxieSNSBo getMoxieSNSMetaData(Integer dataId) {
+        return moxieSNSDomain.getMoxieSNSMetaData(dataId);
     }
 
     @Override
@@ -687,7 +718,7 @@ public class UserDataNativeDomain implements UserDataDomain {
         }
         LOGGER.info("申请贷款入参：" + jsonObject.toJSONString());
         // 请求决策中心获取决策结果
-        ArcBorrowRuleResultBo borrowRuleResultBo = decisionDomain.getResultByRuleEngine(jsonObject);
+        ArcBorrowRuleResultBo borrowRuleResultBo = decisionRemoteDomain.getResultByRuleEngine(jsonObject);
 
         return JSONObject.toJSONString(borrowRuleResultBo);
     }
@@ -792,5 +823,10 @@ public class UserDataNativeDomain implements UserDataDomain {
         //关联完整用户基本信息到用户信息中
         userDataService.addChannelData(userDataId, id, ChannelType.PSAPP.getValue(), ChannelBizType.APP_CALLRECORDS.getValue());
         return id;
+    }
+
+    @Override
+    public AppCallRecordDataBo getAppCallRecordData(Integer dataId) {
+        return appDataDomain.getAppCallRecordData(dataId);
     }
 }

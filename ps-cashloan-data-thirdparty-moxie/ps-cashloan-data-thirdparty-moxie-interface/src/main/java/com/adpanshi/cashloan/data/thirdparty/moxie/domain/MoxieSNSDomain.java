@@ -10,10 +10,10 @@ public interface MoxieSNSDomain {
 
     /**
      * 获取用户sns原始数据By主键
-     * @param snsDataId
+     * @param dataId
      * @return
      */
-    MoxieSNSBo getMetaData(Integer snsDataId);
+    MoxieSNSBo getMoxieSNSMetaData(Integer dataId);
 
     /**
      * 获取磨盒社交信息

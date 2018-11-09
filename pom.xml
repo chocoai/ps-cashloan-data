@@ -16,16 +16,17 @@
     <modules>
         <module>ps-cashloan-data-center</module>
         <module>ps-cashloan-data-schedule</module>
-        <module>ps-cashloan-data-thirdparty-aadhaar</module>
         <module>ps-cashloan-data-user</module>
         <module>ps-cashloan-data-appdata</module>
         <module>ps-cashloan-data-common</module>
         <module>ps-cashloan-data-feature</module>
         <module>ps-cashloan-data-variable</module>
         <module>ps-cashloan-data-idgenerator</module>
+        <module>ps-cashloan-data-thirdparty-aadhaar</module>
         <module>ps-cashloan-data-thirdparty-equifax</module>
         <module>ps-cashloan-data-thirdparty-pancard</module>
         <module>ps-cashloan-data-thirdparty-moxie</module>
+        <module>ps-cashloan-data-thirdparty-tdbody</module>
         <module>ps-cashloan-data-consumerloanhistory</module>
     </modules>
 

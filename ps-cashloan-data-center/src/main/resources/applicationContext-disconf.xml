@@ -19,6 +19,8 @@
                 <value>classpath*:/mongo.properties</value>
                 <value>classpath*:/pancard.properties</value>
                 <value>classpath*:/equifax.properties</value>
+                <value>classpath*:/jdbc.properties</value>
+                <value>classpath*:/db-pool.properties</value>
             </list>
         </property>
     </bean>

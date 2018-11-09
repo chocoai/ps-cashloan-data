@@ -20,6 +20,11 @@
         </dependency>
         <dependency>
             <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-appdata-interface</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
             <artifactId> ps-cashloan-data-thirdparty-moxie-interface</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

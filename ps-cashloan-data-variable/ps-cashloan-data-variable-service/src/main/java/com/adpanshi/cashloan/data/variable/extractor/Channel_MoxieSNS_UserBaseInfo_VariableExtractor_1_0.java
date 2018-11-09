@@ -30,7 +30,7 @@ public class Channel_MoxieSNS_UserBaseInfo_VariableExtractor_1_0 implements Vari
     @Override
     public List<VariableDataValue> doExtract(Integer channelDataId) {
         // 调用磨盒社交信息原始数据接口
-        MoxieSNSBo moxieSNSBo = moxieSNSDomain.getMetaData(channelDataId);
+        MoxieSNSBo moxieSNSBo = moxieSNSDomain.getMoxieSNSMetaData(channelDataId);
         JSONObject jsonObj = JSON.parseObject(moxieSNSBo.getMetaData());
         VariableData variableData = new VariableData();
         addMxSNSUserBaseInfoVariable(jsonObj, variableData);

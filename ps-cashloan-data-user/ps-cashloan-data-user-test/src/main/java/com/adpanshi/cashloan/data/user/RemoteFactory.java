@@ -6,8 +6,8 @@ import com.alibaba.dubbo.config.RegistryConfig;
 
 public class RemoteFactory {
 
-//    private static String address = "zookeeper://127.0.0.1:2181";//这里写上zkServer的IP
-    private static String address = "zookeeper://192.168.20.115:2181";//测试
+    private static String address = "zookeeper://127.0.0.1:2181";//这里写上zkServer的IP
+//    private static String address = "zookeeper://192.168.20.115:2181";//测试
     private static String version = "1.0.0";
     private static String protocol = "dubbo";
     

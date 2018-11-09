@@ -10,10 +10,10 @@ public interface MoxieSIMDomain {
 
     /**
      * 获取用户SIM原始数据By主键
-     * @param simDataId
+     * @param dataId
      * @return
      */
-    MoxieSIMBo getMoxieSIMData(Integer simDataId);
+    MoxieSIMBo getMoxieSIMMetaData(Integer dataId);
 
     /**
      *添加磨盒SIM卡原始数据

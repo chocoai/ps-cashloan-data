@@ -3,7 +3,6 @@ package com.adpanshi.cashloan.data.feature.domain;
 import com.adpanshi.cashloan.data.feature.bo.DataFromBo;
 import com.adpanshi.cashloan.data.feature.bo.FeatureDataBo;
 import com.adpanshi.cashloan.data.feature.enums.FeatureType;
-import com.adpanshi.cashloan.data.variable.bo.VariableDataBo;
 
 import java.util.List;
 

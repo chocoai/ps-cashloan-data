@@ -3,7 +3,6 @@ package com.adpanshi.cashloan.data.thirdparty.pancard.bo;
 import com.adpanshi.cashloan.common.utils.BeanUtil;
 import com.adpanshi.cashloan.common.utils.DateUtil;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**

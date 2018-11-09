@@ -16,8 +16,8 @@ public class MoxieSNSNativeDomain implements MoxieSNSDomain {
     private MoxieSNSService moxieSNSService;
 
     @Override
-    public MoxieSNSBo getMetaData(Integer simDataId) {
-        return moxieSNSService.get(simDataId);
+    public MoxieSNSBo getMoxieSNSMetaData(Integer dataId) {
+        return moxieSNSService.get(dataId);
     }
 
     @Override

@@ -1,7 +1,13 @@
 package com.adpanshi.cashloan.data.user.domain;
 
+import com.adpanshi.cashloan.data.appdata.bo.AppApplicationDataBo;
+import com.adpanshi.cashloan.data.appdata.bo.AppCallRecordDataBo;
+import com.adpanshi.cashloan.data.appdata.bo.AppCommunicationDataBo;
 import com.adpanshi.cashloan.data.common.enums.ChannelBizType;
 import com.adpanshi.cashloan.data.common.enums.ChannelType;
+import com.adpanshi.cashloan.data.thirdparty.equifax.bo.EquifaxReportDataBo;
+import com.adpanshi.cashloan.data.thirdparty.moxie.bo.MoxieSIMBo;
+import com.adpanshi.cashloan.data.thirdparty.moxie.bo.MoxieSNSBo;
 import com.adpanshi.cashloan.data.thirdparty.pancard.bo.PanCardDataBo;
 import com.adpanshi.cashloan.data.user.bo.*;
 import org.springframework.stereotype.Service;
@@ -13,7 +19,7 @@ import java.util.List;
  * 用户数据接口
  * Created by zsw on 2018/6/29 0029.
  */
-@Service
+@Service("userDataDomain")
 public class UserDataRemoteDomain implements UserDataDomain{
 
     @Resource
@@ -52,6 +58,11 @@ public class UserDataRemoteDomain implements UserDataDomain{
         return userDataNativeDomain.fillCommunication(userDataId, originalData);
     }
 
+    @Override
+    public AppCommunicationDataBo getAppCommunicationData(Integer dataId) {
+        return userDataNativeDomain.getAppCommunicationData(dataId);
+    }
+
     /**
      * 填充app应用
      *
@@ -63,6 +74,12 @@ public class UserDataRemoteDomain implements UserDataDomain{
     public Integer fillApplication(Integer userDataId, String originalData) {
         return userDataNativeDomain.fillApplication(userDataId, originalData);
     }
+
+    @Override
+    public AppApplicationDataBo getAppApplicationData(Integer dataId) {
+        return userDataNativeDomain.getAppApplicationData(dataId);
+    }
+
     /**
      * 填充app紧急联系人
      *
@@ -96,8 +113,13 @@ public class UserDataRemoteDomain implements UserDataDomain{
     }
 
     @Override
-    public String getEquifaxCreditReportMetaData(String requestParam) {
-        return null;
+    public String getEquifaxMetaDataFromThirdparty(String requestParam) {
+        return userDataNativeDomain.getEquifaxMetaDataFromThirdparty(requestParam);
+    }
+
+    @Override
+    public EquifaxReportDataBo getEquifaxMetaDataFromDB(Integer dataId) {
+        return userDataNativeDomain.getEquifaxMetaDataFromDB(dataId);
     }
 
     /**
@@ -110,7 +132,7 @@ public class UserDataRemoteDomain implements UserDataDomain{
      */
     @Override
     public Integer fillEquifaxCreditReportInfo(Integer userDataId, String uuid, String params, String metaData) {
-        return null;
+        return userDataNativeDomain.fillEquifaxCreditReportInfo(userDataId, uuid, params, metaData);
     }
 
     /**
@@ -124,7 +146,17 @@ public class UserDataRemoteDomain implements UserDataDomain{
      */
     @Override
     public Integer saveEquifaxCreditReportLog(Integer userDataId, String status, String uuid, String params, String metaData) {
-        return null;
+        return userDataNativeDomain.saveEquifaxCreditReportLog(userDataId, status, uuid, params, metaData);
+    }
+
+    @Override
+    public MoxieSIMBo getMoxieSIMMetaData(Integer dataId) {
+        return userDataNativeDomain.getMoxieSIMMetaData(dataId);
+    }
+
+    @Override
+    public MoxieSNSBo getMoxieSNSMetaData(Integer dataId) {
+        return userDataNativeDomain.getMoxieSNSMetaData(dataId);
     }
 
     @Override
@@ -190,6 +222,11 @@ public class UserDataRemoteDomain implements UserDataDomain{
     @Override
     public Integer fillCallRecordInfo(Integer userDataId, String callRecordMetaData) {
         return userDataNativeDomain.fillCallRecordInfo(userDataId,callRecordMetaData);
+    }
+
+    @Override
+    public AppCallRecordDataBo getAppCallRecordData(Integer dataId) {
+        return userDataNativeDomain.getAppCallRecordData(dataId);
     }
 
     @Override

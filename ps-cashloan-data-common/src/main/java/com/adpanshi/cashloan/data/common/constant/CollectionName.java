@@ -7,6 +7,11 @@ package com.adpanshi.cashloan.data.common.constant;
 public interface CollectionName {
 
     /**
+     * app数据
+     */
+    String APP_DATA = "appData";
+
+    /**
      * ID生成器
      */
     String ID_GENERATOR_CONFIG = "IdGeneratorConfig";

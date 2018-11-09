@@ -32,7 +32,7 @@ public class Channel_MoxieSIMCard_UserCommunication_VariableExtractor_1_0 implem
     @Override
     public List<VariableDataValue> doExtract(Integer channelDataId) {
         //调用磨盒SIM卡信息原始数据接口
-        MoxieSIMBo moxieSIMBo = moxieSIMDomain.getMoxieSIMData(channelDataId);
+        MoxieSIMBo moxieSIMBo = moxieSIMDomain.getMoxieSIMMetaData(channelDataId);
         JSONObject jsonObj = JSON.parseObject(moxieSIMBo.getMetaData());
         VariableData variableData = new VariableData();
         addMxSIMCardUserCommunicationVariable(jsonObj, variableData);

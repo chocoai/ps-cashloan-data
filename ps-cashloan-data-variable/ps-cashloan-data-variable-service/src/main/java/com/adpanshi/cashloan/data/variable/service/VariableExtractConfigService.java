@@ -3,6 +3,8 @@ package com.adpanshi.cashloan.data.variable.service;
 import com.adpanshi.cashloan.common.mongo.MongoUtil;
 import com.adpanshi.cashloan.data.common.constant.CollectionName;
 import com.adpanshi.cashloan.data.common.enums.ChannelBizType;
+import com.adpanshi.cashloan.data.common.enums.ChannelBizType;
+import com.adpanshi.cashloan.data.common.enums.ChannelType;
 import com.adpanshi.cashloan.data.common.enums.ChannelType;
 import com.adpanshi.cashloan.data.variable.model.VariableExtractConfig;
 import com.mongodb.client.model.Filters;
